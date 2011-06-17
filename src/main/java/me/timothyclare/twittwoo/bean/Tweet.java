@@ -1,4 +1,4 @@
-package org.zkoss.zktwitterservice.bean;
+package me.timothyclare.twittwoo.bean;
 
 import java.util.Date;
 
@@ -6,8 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Tweet {

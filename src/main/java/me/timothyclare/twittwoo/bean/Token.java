@@ -1,4 +1,4 @@
-package org.zkoss.zktwitterservice.bean;
+package me.timothyclare.twittwoo.bean;
 
 
 public class Token implements java.io.Serializable {

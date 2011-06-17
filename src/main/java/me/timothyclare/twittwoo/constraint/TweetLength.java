@@ -1,4 +1,4 @@
-package org.zkoss.zktwitterservice.constraint;
+package me.timothyclare.twittwoo.constraint;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;

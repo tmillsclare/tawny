@@ -1,11 +1,11 @@
-package org.zkoss.zktwitterservice.twitter;
+package me.timothyclare.twittwoo.twitter;
 
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.zkoss.zktwitterservice.bean.Tweet;
-import org.zkoss.zktwitterservice.hibernate.TweetDAO;
+import me.timothyclare.twittwoo.bean.Tweet;
+import me.timothyclare.twittwoo.hibernate.TweetDAO;
 
 import twitter4j.Status;
 import twitter4j.Twitter;

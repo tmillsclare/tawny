@@ -1,4 +1,4 @@
-package org.zkoss.zktwitterservice.constraint;
+package me.timothyclare.twittwoo.constraint;
 
 import java.util.Date;
 

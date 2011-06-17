@@ -1,22 +1,22 @@
-package org.zkoss.zktwitterservice.controllers;
+package me.timothyclare.twittwoo.controllers;
+
+import me.timothyclare.twittwoo.TwitterService;
+import me.timothyclare.twittwoo.exceptions.token.TokenNotAccessible;
+import me.timothyclare.twittwoo.hibernate.TokenDAO;
+import me.timothyclare.twittwoo.twitter.TwitterUtil;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
-import org.zkoss.zktwitterservice.TwitterService;
-import org.zkoss.zktwitterservice.exceptions.token.TokenNotAccessible;
-import org.zkoss.zktwitterservice.hibernate.TokenDAO;
-import org.zkoss.zktwitterservice.twitter.TwitterUtil;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Textbox;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.http.AccessToken;
-import twitter4j.http.RequestToken;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 
 public class TokenController extends GenericForwardComposer {
 

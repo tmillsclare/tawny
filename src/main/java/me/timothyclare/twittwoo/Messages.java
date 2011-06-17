@@ -1,4 +1,4 @@
-package org.zkoss.zktwitterservice;
+package me.timothyclare.twittwoo;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

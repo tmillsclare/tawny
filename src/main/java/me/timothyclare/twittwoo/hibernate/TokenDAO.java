@@ -1,4 +1,4 @@
-package org.zkoss.zktwitterservice.hibernate;
+package me.timothyclare.twittwoo.hibernate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.zkoss.zktwitterservice.exceptions.token.TokenInvalid;
-import org.zkoss.zktwitterservice.exceptions.token.TokenNotAccessible;
+import me.timothyclare.twittwoo.exceptions.token.TokenInvalid;
+import me.timothyclare.twittwoo.exceptions.token.TokenNotAccessible;
 
-import twitter4j.http.AccessToken;
+import twitter4j.auth.AccessToken;
 
 
 public class TokenDAO {

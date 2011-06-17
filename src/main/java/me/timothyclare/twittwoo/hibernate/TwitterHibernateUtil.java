@@ -1,4 +1,4 @@
-package org.zkoss.zktwitterservice.hibernate;
+package me.timothyclare.twittwoo.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

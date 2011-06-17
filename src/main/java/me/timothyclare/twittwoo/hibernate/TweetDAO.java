@@ -1,11 +1,11 @@
-package org.zkoss.zktwitterservice.hibernate;
+package me.timothyclare.twittwoo.hibernate;
 
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.zkoss.zktwitterservice.bean.Tweet;
+import me.timothyclare.twittwoo.bean.Tweet;
 
 public class TweetDAO {
 

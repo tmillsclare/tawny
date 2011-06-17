@@ -1,16 +1,16 @@
-package org.zkoss.zktwitterservice;
+package me.timothyclare.twittwoo;
 
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.util.SessionCleanup;
 import org.zkoss.zk.ui.util.SessionInit;
-import org.zkoss.zktwitterservice.exceptions.token.TokenException;
-import org.zkoss.zktwitterservice.hibernate.TokenDAO;
-import org.zkoss.zktwitterservice.hibernate.TwitterHibernateUtil;
-import org.zkoss.zktwitterservice.twitter.TweetManager;
-import org.zkoss.zktwitterservice.twitter.TwitterUtil;
+import me.timothyclare.twittwoo.exceptions.token.TokenException;
+import me.timothyclare.twittwoo.hibernate.TokenDAO;
+import me.timothyclare.twittwoo.hibernate.TwitterHibernateUtil;
+import me.timothyclare.twittwoo.twitter.TweetManager;
+import me.timothyclare.twittwoo.twitter.TwitterUtil;
 
 import twitter4j.Twitter;
-import twitter4j.http.AccessToken;
+import twitter4j.auth.AccessToken;
 
 public class TwitterService implements SessionInit, SessionCleanup{
 	

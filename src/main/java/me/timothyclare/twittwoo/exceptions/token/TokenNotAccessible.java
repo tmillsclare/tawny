@@ -1,4 +1,4 @@
-package org.zkoss.zktwitterservice.exceptions.token;
+package me.timothyclare.twittwoo.exceptions.token;
 
 
 public class TokenNotAccessible extends TokenException {
