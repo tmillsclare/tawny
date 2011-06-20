@@ -1,11 +1,11 @@
-package me.timothyclare.twittwoo.twitter;
+package me.timothyclare.tawny.twitter;
 
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import me.timothyclare.twittwoo.bean.Tweet;
-import me.timothyclare.twittwoo.hibernate.TweetDAO;
+import me.timothyclare.tawny.bean.Tweet;
+import me.timothyclare.tawny.hibernate.TweetDAO;
 
 import twitter4j.Status;
 import twitter4j.Twitter;

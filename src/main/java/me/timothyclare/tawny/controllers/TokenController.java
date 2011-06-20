@@ -1,9 +1,9 @@
-package me.timothyclare.twittwoo.controllers;
+package me.timothyclare.tawny.controllers;
 
-import me.timothyclare.twittwoo.TwitterService;
-import me.timothyclare.twittwoo.exceptions.token.TokenNotAccessible;
-import me.timothyclare.twittwoo.hibernate.TokenDAO;
-import me.timothyclare.twittwoo.twitter.TwitterUtil;
+import me.timothyclare.tawny.TwitterService;
+import me.timothyclare.tawny.exceptions.token.TokenNotAccessible;
+import me.timothyclare.tawny.hibernate.TokenDAO;
+import me.timothyclare.tawny.twitter.TwitterUtil;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;

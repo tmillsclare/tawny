@@ -1,4 +1,4 @@
-package me.timothyclare.twittwoo.hibernate;
+package me.timothyclare.tawny.hibernate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import me.timothyclare.twittwoo.exceptions.token.TokenInvalid;
-import me.timothyclare.twittwoo.exceptions.token.TokenNotAccessible;
+import me.timothyclare.tawny.exceptions.token.TokenInvalid;
+import me.timothyclare.tawny.exceptions.token.TokenNotAccessible;
 
 import twitter4j.auth.AccessToken;
 

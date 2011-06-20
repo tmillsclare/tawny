@@ -1,4 +1,4 @@
-package me.timothyclare.twittwoo.twitter;
+package me.timothyclare.tawny.twitter;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;

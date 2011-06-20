@@ -1,4 +1,4 @@
-package me.timothyclare.twittwoo.constraint;
+package me.timothyclare.tawny.constraint;
 
 import java.util.Date;
 

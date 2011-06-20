@@ -1,11 +1,11 @@
-package me.timothyclare.twittwoo.hibernate;
+package me.timothyclare.tawny.hibernate;
 
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import me.timothyclare.twittwoo.bean.Tweet;
+import me.timothyclare.tawny.bean.Tweet;
 
 public class TweetDAO {
 

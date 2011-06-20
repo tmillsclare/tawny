@@ -1,4 +1,4 @@
-package me.timothyclare.twittwoo.exceptions.token;
+package me.timothyclare.tawny.exceptions.token;
 
 public class TokenInvalid extends TokenException {
 

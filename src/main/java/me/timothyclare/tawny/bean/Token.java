@@ -1,4 +1,4 @@
-package me.timothyclare.twittwoo.bean;
+package me.timothyclare.tawny.bean;
 
 import javax.persistence.Entity;
 

@@ -1,13 +1,14 @@
-package me.timothyclare.twittwoo;
+package me.timothyclare.tawny;
+
+import me.timothyclare.tawny.exceptions.token.TokenException;
+import me.timothyclare.tawny.hibernate.TokenDAO;
+import me.timothyclare.tawny.hibernate.TwitterHibernateUtil;
+import me.timothyclare.tawny.twitter.TweetManager;
+import me.timothyclare.tawny.twitter.TwitterUtil;
 
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.util.SessionCleanup;
 import org.zkoss.zk.ui.util.SessionInit;
-import me.timothyclare.twittwoo.exceptions.token.TokenException;
-import me.timothyclare.twittwoo.hibernate.TokenDAO;
-import me.timothyclare.twittwoo.hibernate.TwitterHibernateUtil;
-import me.timothyclare.twittwoo.twitter.TweetManager;
-import me.timothyclare.twittwoo.twitter.TwitterUtil;
 
 import twitter4j.Twitter;
 import twitter4j.auth.AccessToken;

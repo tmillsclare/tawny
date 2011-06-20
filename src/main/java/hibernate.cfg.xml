@@ -13,6 +13,6 @@
     	
     	<property name="hibernate.hbm2ddl.auto">create-drop</property>
     	
-    	<mapping class="me.timothyclare.twittwoo.bean.Tweet" />
+    	<mapping class="me.timothyclare.tawny.bean.Tweet" />
     </session-factory>
 </hibernate-configuration>

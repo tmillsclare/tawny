@@ -1,13 +1,14 @@
-package me.timothyclare.twittwoo;
+package me.timothyclare.tawny;
 
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class Messages {
-	private static final String BUNDLE_NAME = "me.timothyclare.twittwoo.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "me.timothyclare.tawny.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-			.getBundle(BUNDLE_NAME);
+			.getBundle(BUNDLE_NAME, Locale.ROOT);
 
 	private Messages() {
 	}

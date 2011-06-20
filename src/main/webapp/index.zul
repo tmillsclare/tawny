@@ -1,5 +1,5 @@
 <?page title="Auto Generated index.zul"?>
-<window title="Hello World!!" border="normal" width="800px" apply="me.timothyclare.twittwoo.controllers.TwitterController">
+<window title="Hello World!!" border="normal" width="800px" apply="me.timothyclare.tawny.controllers.TwitterController">
 	<vlayout>
 		<groupbox>
 			<vlayout>

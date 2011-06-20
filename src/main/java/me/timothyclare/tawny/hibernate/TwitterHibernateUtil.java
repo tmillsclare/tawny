@@ -1,4 +1,4 @@
-package me.timothyclare.twittwoo.hibernate;
+package me.timothyclare.tawny.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
