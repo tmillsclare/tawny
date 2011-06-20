@@ -48,9 +48,9 @@ public class TwitterController extends GenericForwardComposer {
 		try {
 			TokenDAO.getToken(); //test to see whether a token exists
 			Twitter twitter = TwitterUtil.getInstance().getTwitter();
-			
+
 			if(twitter != null) {
-				if(!twitter.isOAuthEnabled()) { //if not authorized it we need a new token
+				if(!twitter.getAuthorization().isEnabled()) { //if not authorized it we need a new token
 					Executions.sendRedirect("token.zul");
 				}
 			} else {

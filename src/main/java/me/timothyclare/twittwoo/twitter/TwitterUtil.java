@@ -21,11 +21,15 @@ public class TwitterUtil {
 	private Twitter twitter;
 	
 	public Twitter buildTwitter(String consumerKey, String consumerSecret, AccessToken token) throws Exception {
-		return new TwitterFactory().getOAuthAuthorizedInstance(consumerKey, consumerSecret, token);
+		twitter = new TwitterFactory().getInstance();
+		twitter.setOAuthConsumer(consumerKey, consumerSecret);
+		twitter.setOAuthAccessToken(token);
+		
+		return twitter;
 	}
 	
 	public Twitter buildTwitter(String consumerKey, String consumerSecret) throws Exception {
-		Twitter twitter = new TwitterFactory().getInstance();
+		twitter = new TwitterFactory().getInstance();
 		twitter.setOAuthConsumer(consumerKey, consumerSecret);
 		return twitter;
 	}
