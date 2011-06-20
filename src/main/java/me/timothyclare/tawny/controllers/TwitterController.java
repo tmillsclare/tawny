@@ -75,8 +75,8 @@ public class TwitterController extends GenericForwardComposer {
 			public void render(Row row, Object data) throws Exception {
 				Tweet tweet = (Tweet)data;
 				
-				new Label(tweet.getText()).setParent(row);
-				new Label(tweet.getSchedule().toString()).setParent(row);
+				/*new Label(tweet.getText()).setParent(row);
+				new Label(tweet.getSchedule().toString()).setParent(row);*/
 			}
 		});
 		
@@ -89,10 +89,10 @@ public class TwitterController extends GenericForwardComposer {
 		if(!(txttweet.isValid() && dbschedule.isValid()))
 			return;
 		
-		Tweet tweet = new Tweet(txttweet.getValue(), dbschedule.getValue());
+		//Tweet tweet = new Tweet(txttweet.getValue(), dbschedule.getValue());
 		
-		model.add(tweet);
+		/*model.add(tweet);
 		TweetDAO.add(tweet);
-		TweetManager.getInstance().scheduleTweet(tweet, dbschedule.getValue());
+		TweetManager.getInstance().scheduleTweet(tweet, dbschedule.getValue());*/
 	}
 }

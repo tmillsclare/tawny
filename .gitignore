@@ -2,5 +2,6 @@
 .classpath
 .settings/*
 target/*
+twittwoo/target/*
 data/*
 token

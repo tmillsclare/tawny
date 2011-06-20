@@ -53,7 +53,7 @@ public class TweetManager {
 			}
 			
 			try {
-				Status status = twitter.updateStatus(tweet.getText());
+				Status status = twitter.updateStatus(tweet.getContent());
 				System.out.println(status);
 				tweet.setTweeted(true);
 				TweetDAO.update(tweet);
