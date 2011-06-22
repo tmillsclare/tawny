@@ -1,17 +1,20 @@
+
 <window id="EventBooking" title="Event Booking" border="normal"
-	mode="popup" apply="me.timothyclare.tawny.controllers.CalendarController" visible="false">
+	mode="modal" visible="false">
+	<custom-attributes tweetinst="${arg.tweet}"/>
 	<grid width="400px">
 		<rows>
-			<row vflex="1">
-				Title: <textbox id="tbTitle" hflex="true" vflex="true" />
+			<row vflex="1" spans="2" >
+				<label id="tbTitle" hflex="true" vflex="true" value="@{tweetinst.bean.id, save-when='btnCreate.onClick'}" />
 			</row>
-			<row vflex="8">
-				Note:
-				<textbox id="tbNote" hflex="true" vflex="true" />
+			<row vflex="1" spans="2">
+				<textbox id="tbNote" hflex="true" vflex="true" value="@{tweetinst.bean.content, save-when='btnCreate.onClick'}" />
 			</row>
-			<row vflex="1">
-				Submit:
-				<button id="btnAdd" label="Create" hflex="true" vflex="true" />
+			<row vflex="1" spans="2">
+				<hlayout>
+					<button id="btnCreate" label="Create" hflex="1" onClick="tweetinst.update(); EventBooking.detach();" />
+					<button id="btnCancel" label="Cancel" hflex="1" onClick="EventBooking.detach();" />
+				</hlayout>
 			</row>
 		</rows>
 	</grid>

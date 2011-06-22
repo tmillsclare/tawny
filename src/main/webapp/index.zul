@@ -1,20 +1,4 @@
 <?page title="Auto Generated index.zul"?>
-<window title="Hello World!!" border="normal" width="800px" apply="me.timothyclare.tawny.controllers.TwitterController">
-	<vlayout>
-		<groupbox>
-			<vlayout>
-				<grid width="500px" id="tweetGrid">
-					<columns>
-						<column label="Text" width="400px" />
-						<column label="Date" width="100px" />
-					</columns>
-				</grid>
-				<hlayout>
-					<textbox id="txttweet" width="350px" />
-					<datebox id="dbschedule" width="100px" format="yyyy/MM/dd a hh:mm:ss" mold="rounded"/>
-					<button id="schedule" label="Schedule Tweet" />
-				</hlayout>
-			</vlayout>
-		</groupbox>
-	</vlayout>
+<window title="Hello World!!" id="win" border="normal" hflex="true" vflex="true" apply="me.timothyclare.tawny.controllers.TwitterController">
+	<calendars id="cal" firstDayOfWeek="Sunday" timeZone="California=PDT-8" mold="default" />
 </window>

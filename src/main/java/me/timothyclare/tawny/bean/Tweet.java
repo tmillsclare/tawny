@@ -66,7 +66,8 @@ public class Tweet implements CalendarEvent {
 	@Transient
 	@Override
 	public String getTitle() {
-		return "Tweet: " + Long.toString(getId());
+		String sId = this.id == null ? "" : this.id.toString(); 
+		return "Tweet " + sId;
 	}
 	
 	@NotNull
@@ -103,5 +104,32 @@ public class Tweet implements CalendarEvent {
 	public boolean isLocked() {
 		return false;
 	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		if (arg0 == this) { return true;}
+		if (arg0 instanceof Tweet) {
+			Tweet tweet = (Tweet)arg0;
+			return tweet.getId().equals(this.getId());
+		}
+		
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		
+		final int hashCode;
+		
+		if(getId() != null) {
+			hashCode = getId().hashCode();
+		} else {
+			hashCode = 0;
+		}
+		
+		return hashCode;
+	}
+	
+	
 
 }

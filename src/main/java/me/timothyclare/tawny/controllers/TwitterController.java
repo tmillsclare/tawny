@@ -1,30 +1,29 @@
 package me.timothyclare.tawny.controllers;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.timothyclare.tawny.bean.Tweet;
-import me.timothyclare.tawny.constraint.DateBeforeNow;
-import me.timothyclare.tawny.constraint.TweetLength;
+import me.timothyclare.tawny.bean.sharer.AbstractGenericSharer;
+import me.timothyclare.tawny.bean.sharer.GenericSharer;
 import me.timothyclare.tawny.exceptions.token.TokenException;
 import me.timothyclare.tawny.hibernate.TokenDAO;
 import me.timothyclare.tawny.hibernate.TweetDAO;
-import me.timothyclare.tawny.twitter.TweetManager;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 
+import org.zkoss.calendar.Calendars;
+import org.zkoss.calendar.api.CalendarEvent;
+import org.zkoss.calendar.event.CalendarsEvent;
+import org.zkoss.calendar.impl.SimpleCalendarModel;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Page;
-import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
-import org.zkoss.zul.Button;
-import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.RowRenderer;
-import org.zkoss.zul.Textbox;
+import org.zkoss.zkplus.databind.AnnotateDataBinder;
+import org.zkoss.zul.Window;
 
 import twitter4j.Twitter;
 
@@ -35,12 +34,12 @@ public class TwitterController extends GenericForwardComposer {
 	 */
 	private static final long serialVersionUID = -2167187007757661223L;
 	
-	Grid tweetGrid;
-	Textbox txttweet;
-	Datebox dbschedule;
-	Button schedule;
+	private Window bookEventWin, win;
+	private Calendars cal;
 	
-	ListModelList model = new ListModelList();
+	//ListModelList model = new ListModelList();
+	SimpleCalendarModel model = null;
+	CalendarEvent currentEvent = null;
 	
 	public ComponentInfo doBeforeCompose(Page page, Component parent,
 			ComponentInfo compInfo) {
@@ -68,31 +67,44 @@ public class TwitterController extends GenericForwardComposer {
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		
-		txttweet.setConstraint(new TweetLength());
-		dbschedule.setConstraint(new DateBeforeNow());
-		
-		tweetGrid.setRowRenderer(new RowRenderer() {
-			public void render(Row row, Object data) throws Exception {
-				Tweet tweet = (Tweet)data;
-				
-				/*new Label(tweet.getText()).setParent(row);
-				new Label(tweet.getSchedule().toString()).setParent(row);*/
-			}
-		});
-		
 		List<Tweet> tweets = TweetDAO.findAll();
-		model.addAll(tweets);
-		tweetGrid.setModel(model);
+		CalendarEvent[] calendarEvents = new CalendarEvent[tweets.size()];
+		tweets.toArray(calendarEvents);
+			
+		if (tweets.isEmpty()) {
+			model = new SimpleCalendarModel();
+		} else {
+			model = new SimpleCalendarModel(Arrays.asList(calendarEvents), false);
+		}
+		
+		cal.setModel(model);
 	}
 	
-	public void onClick$schedule(Event e) {
-		if(!(txttweet.isValid() && dbschedule.isValid()))
-			return;
-		
-		//Tweet tweet = new Tweet(txttweet.getValue(), dbschedule.getValue());
-		
-		/*model.add(tweet);
-		TweetDAO.add(tweet);
-		TweetManager.getInstance().scheduleTweet(tweet, dbschedule.getValue());*/
+	public void onEventCreate$cal(CalendarsEvent event){     
+	    
+	    Map<String, GenericSharer<Tweet>> map = new HashMap<String, GenericSharer<Tweet>>();
+	    
+	    Tweet tweet = new Tweet();
+	    tweet.setBeginDate(event.getBeginDate());
+	    
+	    GenericSharer<Tweet> tweetsharer = new AbstractGenericSharer<Tweet>() {
+
+			@Override
+			public void update() {
+				TweetDAO.add(getBean());
+				model.add(getBean());
+			}
+	    	
+	    };
+	        
+	    tweetsharer.setBean(tweet);
+	    map.put("tweet", tweetsharer);
+	    
+	    bookEventWin = (Window)Executions.createComponents("macro/book.zul", win, map);
+	    
+	    AnnotateDataBinder adb = new AnnotateDataBinder(bookEventWin);
+	    adb.loadAll();
+	    
+	    bookEventWin.setVisible(true);
 	}
 }
