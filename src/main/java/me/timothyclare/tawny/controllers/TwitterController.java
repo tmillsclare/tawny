@@ -34,7 +34,10 @@ public class TwitterController extends GenericForwardComposer {
 	 */
 	private static final long serialVersionUID = -2167187007757661223L;
 	
-	private Window bookEventWin, win;
+	//private final Calendar myCalendar = Cal
+	
+	private Component bookEventWin, editEventWin;
+	private Window win;
 	private Calendars cal;
 	
 	//ListModelList model = new ListModelList();
@@ -82,10 +85,35 @@ public class TwitterController extends GenericForwardComposer {
 	
 	public void onEventCreate$cal(CalendarsEvent event){     
 	    
-	    Map<String, GenericSharer<Tweet>> map = new HashMap<String, GenericSharer<Tweet>>();
-	    
-	    Tweet tweet = new Tweet();
+		Tweet tweet = new Tweet();
 	    tweet.setBeginDate(event.getBeginDate());
+	    
+	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(tweet));
+	    
+	    AnnotateDataBinder adb = new AnnotateDataBinder(bookEventWin);
+	    adb.loadAll();
+	    
+	    bookEventWin.setVisible(true);
+	}
+	
+	public void onEventEdit$cal(CalendarsEvent event) {
+		Tweet tweet = (Tweet)event.getCalendarEvent();
+		
+		if(tweet.isTweeted()) {
+			alert("You cannot edit this tweet it has already been tweeted");
+			return;
+		}
+		
+		editEventWin = Executions.createComponents("macro/bookEdit.zul", win, generateArguments(tweet));
+		
+		AnnotateDataBinder adb = new AnnotateDataBinder(editEventWin);
+	    adb.loadAll();
+	    
+	    editEventWin.setVisible(true);
+	}
+	
+	private Map<String, GenericSharer<Tweet>> generateArguments(Tweet tweet) {
+		Map<String, GenericSharer<Tweet>> map = new HashMap<String, GenericSharer<Tweet>>();
 	    
 	    GenericSharer<Tweet> tweetsharer = new AbstractGenericSharer<Tweet>() {
 
@@ -100,11 +128,6 @@ public class TwitterController extends GenericForwardComposer {
 	    tweetsharer.setBean(tweet);
 	    map.put("tweet", tweetsharer);
 	    
-	    bookEventWin = (Window)Executions.createComponents("macro/book.zul", win, map);
-	    
-	    AnnotateDataBinder adb = new AnnotateDataBinder(bookEventWin);
-	    adb.loadAll();
-	    
-	    bookEventWin.setVisible(true);
+	    return map;
 	}
 }

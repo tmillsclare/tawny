@@ -20,7 +20,8 @@ public class Tweet implements CalendarEvent {
 	private Date beginDate;
 	private boolean tweeted;
 	
-	private static final String colour = "blue";
+	private static final String notTweetedColour = "blue";
+	private static final String tweetedColour = "red";
 
 	public Tweet() {
 	}
@@ -84,13 +85,13 @@ public class Tweet implements CalendarEvent {
 	@Transient
 	@Override
 	public String getHeaderColor() {
-		return colour;
+		return tweeted ? tweetedColour : notTweetedColour;
 	}
 	
 	@Transient
 	@Override
 	public String getContentColor() {
-		return colour;
+		return tweeted ? tweetedColour : notTweetedColour;
 	}
 	
 	@Transient
@@ -102,7 +103,7 @@ public class Tweet implements CalendarEvent {
 	@Transient
 	@Override
 	public boolean isLocked() {
-		return false;
+		return tweeted;
 	}
 
 	@Override
@@ -110,6 +111,9 @@ public class Tweet implements CalendarEvent {
 		if (arg0 == this) { return true;}
 		if (arg0 instanceof Tweet) {
 			Tweet tweet = (Tweet)arg0;
+			
+			if((this.getId() == null) || (((Tweet) arg0).getId() == null)) { return false;}
+			
 			return tweet.getId().equals(this.getId());
 		}
 		
