@@ -11,6 +11,7 @@ import me.timothyclare.tawny.bean.sharer.GenericSharer;
 import me.timothyclare.tawny.exceptions.token.TokenException;
 import me.timothyclare.tawny.hibernate.TokenDAO;
 import me.timothyclare.tawny.hibernate.TweetDAO;
+import me.timothyclare.tawny.twitter.TweetManager;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 
 import org.zkoss.calendar.Calendars;
@@ -40,16 +41,36 @@ public class TwitterController extends GenericForwardComposer {
 	private Window win;
 	private Calendars cal;
 	
+	private final GenericSharer<Tweet> tweetSharerAdd = new AbstractGenericSharer<Tweet>() {
+
+		@Override
+		public void update() {
+			TweetDAO.add(getBean());
+			model.add(getBean());
+			TweetManager.INSTANCE.scheduleTweet(getBean(), getBean().getBeginDate());
+		}
+    	
+    };
+	
+    private final GenericSharer<Tweet> tweetSharerUpdate = new AbstractGenericSharer<Tweet>() {
+
+		@Override
+		public void update() {
+			TweetDAO.update(getBean());
+			model.update(getBean());
+		}
+    	
+    };
+    
 	//ListModelList model = new ListModelList();
 	SimpleCalendarModel model = null;
-	CalendarEvent currentEvent = null;
 	
 	public ComponentInfo doBeforeCompose(Page page, Component parent,
 			ComponentInfo compInfo) {
 		
 		try {
 			TokenDAO.getToken(); //test to see whether a token exists
-			Twitter twitter = TwitterUtil.getInstance().getTwitter();
+			Twitter twitter = TwitterUtil.INSTANCE.getTwitter();
 
 			if(twitter != null) {
 				if(!twitter.getAuthorization().isEnabled()) { //if not authorized it we need a new token
@@ -59,7 +80,6 @@ public class TwitterController extends GenericForwardComposer {
 				throw new RuntimeException("Could not retrieve twitter");
 			}
 		} catch (TokenException e) {
-			e.printStackTrace();
 			Executions.sendRedirect("token.zul");			
 		} 
 		
@@ -88,7 +108,7 @@ public class TwitterController extends GenericForwardComposer {
 		Tweet tweet = new Tweet();
 	    tweet.setBeginDate(event.getBeginDate());
 	    
-	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(tweet));
+	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(tweet, tweetSharerAdd));
 	    
 	    AnnotateDataBinder adb = new AnnotateDataBinder(bookEventWin);
 	    adb.loadAll();
@@ -104,7 +124,7 @@ public class TwitterController extends GenericForwardComposer {
 			return;
 		}
 		
-		editEventWin = Executions.createComponents("macro/bookEdit.zul", win, generateArguments(tweet));
+		editEventWin = Executions.createComponents("macro/bookEdit.zul", win, generateArguments(tweet, tweetSharerUpdate));
 		
 		AnnotateDataBinder adb = new AnnotateDataBinder(editEventWin);
 	    adb.loadAll();
@@ -112,21 +132,31 @@ public class TwitterController extends GenericForwardComposer {
 	    editEventWin.setVisible(true);
 	}
 	
-	private Map<String, GenericSharer<Tweet>> generateArguments(Tweet tweet) {
+	public void onEventUpdate$cal(CalendarsEvent event) {
+		Tweet tweet = (Tweet)event.getCalendarEvent();
+		
+		if(tweet.isTweeted()) {
+			alert("You cannot edit this tweet it has already been tweeted");
+			return;
+		}
+		
+		if(event.getBeginDate().equals(event.getBeginDate())) {
+			event.clearGhost();
+			return;
+		}
+		
+		tweet.setBeginDate(event.getBeginDate());
+		
+		TweetDAO.update(tweet);
+		model.update(tweet);		
+	}
+	
+	private Map<String, GenericSharer<Tweet>> generateArguments(Tweet tweet, GenericSharer<Tweet> genericSharer) {
+		    
 		Map<String, GenericSharer<Tweet>> map = new HashMap<String, GenericSharer<Tweet>>();
-	    
-	    GenericSharer<Tweet> tweetsharer = new AbstractGenericSharer<Tweet>() {
-
-			@Override
-			public void update() {
-				TweetDAO.add(getBean());
-				model.add(getBean());
-			}
-	    	
-	    };
 	        
-	    tweetsharer.setBean(tweet);
-	    map.put("tweet", tweetsharer);
+		genericSharer.setBean(tweet);
+	    map.put("tweet", genericSharer);
 	    
 	    return map;
 	}

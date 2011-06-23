@@ -1,42 +1,57 @@
 package me.timothyclare.tawny.twitter;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.hibernate.TweetDAO;
-
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-public class TweetManager {
-	private TweetManager() {}
+public enum TweetManager {
+	INSTANCE;
 	
-	private static TweetManager tweetManager;
-	
-	public synchronized static TweetManager getInstance() {
-		if(tweetManager == null) {
-			tweetManager = new TweetManager();
-		}
-		
-		return tweetManager;
-	}
-	
-	private Timer timer =  new Timer();
+	private Timer _timer =  new Timer();
+	private Map<Tweet, TweetTask> _scheduledTasks = new HashMap<Tweet, TweetTask>();
 	
 	public void scheduleTweet(Tweet tweet, Date time) {
 		if(tweet != null) {
-			timer.schedule(new TweetTask(tweet), time);
+			TweetTask tweetTask = new TweetTask(tweet);
+			_timer.schedule(tweetTask, time);
+			_scheduledTasks.put(tweet, tweetTask);
 		}
 	}
 	
-	public void cancel() {
-		timer.cancel();
+	public void cancelAll() {
+		_timer.cancel();
 	}
 	
-	class TweetTask extends TimerTask {
+	public boolean cancelTweet(Tweet tweet) {
+		
+		boolean result = false;
+		
+		if (tweet == null) {
+			throw new NullPointerException("The argument tweet cannot be null");
+		}
+		
+		Object objTweet = _scheduledTasks.get(tweet);
+		
+		if(objTweet instanceof TweetTask) {
+			TweetTask tweetTask = (TweetTask)objTweet;
+			result = tweetTask.cancel();
+		}
+		
+		if(result) {
+			_scheduledTasks.remove(tweet);
+		}
+		
+		return result;
+	}
+	
+	public static class TweetTask extends TimerTask {
 		
 		Tweet tweet;
 		
@@ -46,19 +61,17 @@ public class TweetManager {
 		
 		@Override
 		public void run() {
-			Twitter twitter = TwitterUtil.getInstance().getTwitter();
+			Twitter twitter = TwitterUtil.INSTANCE.getTwitter();
 			
 			if(twitter == null) {
 				throw new RuntimeException("Twitter does not exist");
 			}
 			
 			try {
-				Status status = twitter.updateStatus(tweet.getContent());
-				System.out.println(status);
+				twitter.updateStatus(tweet.getContent());
 				tweet.setTweeted(true);
 				TweetDAO.update(tweet);
 			} catch (TwitterException e) {
-				e.printStackTrace();
 				tweet.setTweeted(false);
 			}
 		}

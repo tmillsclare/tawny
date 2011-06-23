@@ -4,19 +4,9 @@ import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 
-public class TwitterUtil {
+public enum TwitterUtil {
 	
-	private static TwitterUtil twitterUtil=null;
-	
-	private TwitterUtil(){};
-	
-	public synchronized static TwitterUtil getInstance() {
-		if(twitterUtil == null) {
-			twitterUtil = new TwitterUtil();
-		}
-		
-		return twitterUtil;
-	}
+	INSTANCE;
 	
 	private Twitter twitter;
 	

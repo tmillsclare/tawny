@@ -19,7 +19,7 @@ public class Tweet implements CalendarEvent {
 	private String text;
 	private Date beginDate;
 	private boolean tweeted;
-	
+
 	private static final String notTweetedColour = "blue";
 	private static final String tweetedColour = "red";
 

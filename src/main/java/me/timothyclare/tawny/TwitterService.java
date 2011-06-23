@@ -22,7 +22,7 @@ public class TwitterService implements SessionInit, SessionCleanup{
 	public void cleanup(Session sess) throws Exception {
 		
 		TwitterHibernateUtil.getSessionFactory().close();
-		TweetManager.getInstance().cancel();
+		TweetManager.INSTANCE.cancelAll();
 	}
 
 	public void init(Session sess, Object request) throws Exception {
@@ -34,15 +34,15 @@ public class TwitterService implements SessionInit, SessionCleanup{
 		
 		try {
 			token = TokenDAO.getToken();
-			twitter = TwitterUtil.getInstance().buildTwitter(CONSUMERKEY, CONSUMERSECRET, token);
+			twitter = TwitterUtil.INSTANCE.buildTwitter(CONSUMERKEY, CONSUMERSECRET, token);
 		} catch (TokenException e) {
 			//authorization failed, let's create an intermediate instance without
 			//authorization
 			if(twitter == null) {
-				twitter = TwitterUtil.getInstance().buildTwitter(CONSUMERKEY, CONSUMERSECRET);
+				twitter = TwitterUtil.INSTANCE.buildTwitter(CONSUMERKEY, CONSUMERSECRET);
 			}
 		}
 		
-		TwitterUtil.getInstance().setTwitter(twitter);
+		TwitterUtil.INSTANCE.setTwitter(twitter);
 	}	
 }

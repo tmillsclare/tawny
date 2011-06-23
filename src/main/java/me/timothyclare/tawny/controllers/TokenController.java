@@ -36,7 +36,7 @@ public class TokenController extends GenericForwardComposer {
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		
-		twitter = TwitterUtil.getInstance().getTwitter();
+		twitter = TwitterUtil.INSTANCE.getTwitter();
 
 		if (twitter == null)
 			throw new RuntimeException(
@@ -47,7 +47,7 @@ public class TokenController extends GenericForwardComposer {
 			requestToken = twitter.getOAuthRequestToken();
 		} catch(TwitterException te) {
 			//this didn't work let's rebuild and try again
-			twitter = TwitterUtil.getInstance().buildTwitter(TwitterService.CONSUMERKEY, TwitterService.CONSUMERSECRET);
+			twitter = TwitterUtil.INSTANCE.buildTwitter(TwitterService.CONSUMERKEY, TwitterService.CONSUMERSECRET);
 			requestToken = twitter.getOAuthRequestToken();
 		}
 		
