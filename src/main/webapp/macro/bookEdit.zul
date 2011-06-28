@@ -1,21 +1,21 @@
 
 <window id="tweetbooking" title="Tweet" border="normal"
 	mode="modal" visible="false">
-	<custom-attributes tweetinst="${arg.tweet}"/>
+	<custom-attributes tweetinst="${arg.tweetContext}"/>
 	<grid width="400px">
 		<rows>
 			<row vflex="1" spans="2">
-				<label hflex="true" vflex="true" value="@{tweetinst.bean.title}" />
+				<label hflex="true" vflex="true" value="@{tweetinst.bean.tweet.title}" />
 			</row>
 			<row vflex="1" spans="2">
-				<datebox id="dbschedule" hflex="true" format="yyyy/MM/dd a hh:mm:ss" mold="rounded" value="@{tweetinst.bean.beginDate, save-when='btnCreate.onClick'}"/>
+				<datebox id="dbschedule" hflex="true" format="yyyy/MM/dd a hh:mm:ss" mold="rounded" value="@{tweetinst.bean.tweet.beginDate, save-when='btnCreate.onClick'}"/>
 			</row>
 			<row vflex="1" spans="2">
-				<textbox id="tbNote" hflex="true" vflex="true" value="@{tweetinst.bean.content, save-when='btnCreate.onClick'}" />
+				<textbox id="tbNote" hflex="true" vflex="true" value="@{tweetinst.bean.tweet.content, save-when='btnCreate.onClick'}" />
 			</row>
 			<row vflex="1" spans="2">
 				<hlayout>
-					<button id="btnCreate" label="Create" hflex="1" onClick="tweetinst.update(); tweetbooking.detach();" />
+					<button id="btnCreate" label="Update" hflex="1" onClick="tweetinst.update(); tweetbooking.detach();" />
 					<button id="btnCancel" label="Cancel" hflex="1" onClick="tweetbooking.detach();" />
 				</hlayout>
 			</row>

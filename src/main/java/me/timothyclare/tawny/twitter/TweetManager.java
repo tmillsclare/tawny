@@ -1,80 +1,48 @@
 package me.timothyclare.tawny.twitter;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import me.timothyclare.tawny.bean.Tweet;
+import me.timothyclare.tawny.bean.TweetContext;
 import me.timothyclare.tawny.hibernate.TweetDAO;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
 public enum TweetManager {
 	INSTANCE;
 	
-	private Timer _timer =  new Timer();
-	private Map<Tweet, TweetTask> _scheduledTasks = new HashMap<Tweet, TweetTask>();
+	private Map<Tweet, TweetContext> tweetMap = new HashMap<Tweet, TweetContext>();
 	
-	public void scheduleTweet(Tweet tweet, Date time) {
-		if(tweet != null) {
-			TweetTask tweetTask = new TweetTask(tweet);
-			_timer.schedule(tweetTask, time);
-			_scheduledTasks.put(tweet, tweetTask);
-		}
+	public void addTweet(TweetContext tweetContext) {
+		tweetMap.put(tweetContext.getTweet(), tweetContext);
+		TweetDAO.add(tweetContext.getTweet());
+		tweetContext.getCalendarModel().add(tweetContext.getTweet());
 	}
 	
-	public void cancelAll() {
-		_timer.cancel();
+	public void updateTweet(TweetContext tweetContext) {
+		
+		if(tweetContext == null) {
+			throw new NullPointerException("The argument tweetContext cannot be null");
+		}
+		
+		Tweet tweet = tweetContext.getTweet();
+		
+		TweetDAO.update(tweet);
+		tweetContext.getCalendarModel().update(tweet);
 	}
 	
-	public boolean cancelTweet(Tweet tweet) {
+	public void removeTweet(TweetContext tweetContext) {
 		
-		boolean result = false;
-		
-		if (tweet == null) {
-			throw new NullPointerException("The argument tweet cannot be null");
+		if(tweetContext == null) {
+			throw new NullPointerException("The argument tweetContext cannot be null");
 		}
 		
-		Object objTweet = _scheduledTasks.get(tweet);
+		Tweet tweet = tweetContext.getTweet();
 		
-		if(objTweet instanceof TweetTask) {
-			TweetTask tweetTask = (TweetTask)objTweet;
-			result = tweetTask.cancel();
-		}
-		
-		if(result) {
-			_scheduledTasks.remove(tweet);
-		}
-		
-		return result;
+		TweetDAO.remove(tweet);
+		tweetContext.getCalendarModel().remove(tweet);
 	}
 	
-	public static class TweetTask extends TimerTask {
-		
-		Tweet tweet;
-		
-		public TweetTask(Tweet tweet) {
-			this.tweet = tweet;
-		}
-		
-		@Override
-		public void run() {
-			Twitter twitter = TwitterUtil.INSTANCE.getTwitter();
-			
-			if(twitter == null) {
-				throw new RuntimeException("Twitter does not exist");
-			}
-			
-			try {
-				twitter.updateStatus(tweet.getContent());
-				tweet.setTweeted(true);
-				TweetDAO.update(tweet);
-			} catch (TwitterException e) {
-				tweet.setTweeted(false);
-			}
-		}
-		
+	public TweetContext getTweet(Tweet tweet) {
+		return tweetMap.get(tweet);
 	}
 }

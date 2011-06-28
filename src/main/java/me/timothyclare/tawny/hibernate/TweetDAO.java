@@ -38,5 +38,15 @@ public class TweetDAO {
 		
 		session.close();
 	}
+	
+	public static void remove(Tweet tweet) {
+		Session session = TwitterHibernateUtil.openSession();
+		Transaction t = session.beginTransaction();
+		
+		session.delete(tweet);
+		t.commit();
+		
+		session.close();
+	}
 
 }

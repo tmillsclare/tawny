@@ -1,13 +1,14 @@
 package me.timothyclare.tawny.controllers;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import me.timothyclare.tawny.bean.Tweet;
-import me.timothyclare.tawny.bean.sharer.AbstractGenericSharer;
+import me.timothyclare.tawny.bean.TweetContext;
 import me.timothyclare.tawny.bean.sharer.GenericSharer;
+import me.timothyclare.tawny.bean.sharer.TweetAddGenericSharer;
+import me.timothyclare.tawny.bean.sharer.TweetUpdateGenericSharer;
 import me.timothyclare.tawny.exceptions.token.TokenException;
 import me.timothyclare.tawny.hibernate.TokenDAO;
 import me.timothyclare.tawny.hibernate.TweetDAO;
@@ -34,37 +35,17 @@ public class TwitterController extends GenericForwardComposer {
 	 * 
 	 */
 	private static final long serialVersionUID = -2167187007757661223L;
-	
-	//private final Calendar myCalendar = Cal
-	
+		
 	private Component bookEventWin, editEventWin;
 	private Window win;
 	private Calendars cal;
-	
-	private final GenericSharer<Tweet> tweetSharerAdd = new AbstractGenericSharer<Tweet>() {
-
-		@Override
-		public void update() {
-			TweetDAO.add(getBean());
-			model.add(getBean());
-			TweetManager.INSTANCE.scheduleTweet(getBean(), getBean().getBeginDate());
-		}
-    	
-    };
-	
-    private final GenericSharer<Tweet> tweetSharerUpdate = new AbstractGenericSharer<Tweet>() {
-
-		@Override
-		public void update() {
-			TweetDAO.update(getBean());
-			model.update(getBean());
-		}
-    	
-    };
     
-	//ListModelList model = new ListModelList();
-	SimpleCalendarModel model = null;
+	private final SimpleCalendarModel model = new SimpleCalendarModel();
 	
+	private static final TweetAddGenericSharer addTweetSharer = new TweetAddGenericSharer();
+	private static final TweetUpdateGenericSharer updateTweetSharer = new TweetUpdateGenericSharer();
+	
+	@Override
 	public ComponentInfo doBeforeCompose(Page page, Component parent,
 			ComponentInfo compInfo) {
 		
@@ -94,10 +75,8 @@ public class TwitterController extends GenericForwardComposer {
 		CalendarEvent[] calendarEvents = new CalendarEvent[tweets.size()];
 		tweets.toArray(calendarEvents);
 			
-		if (tweets.isEmpty()) {
-			model = new SimpleCalendarModel();
-		} else {
-			model = new SimpleCalendarModel(Arrays.asList(calendarEvents), false);
+		if (!tweets.isEmpty()) {
+			for (CalendarEvent ce : calendarEvents) { model.add(ce);}
 		}
 		
 		cal.setModel(model);
@@ -108,7 +87,7 @@ public class TwitterController extends GenericForwardComposer {
 		Tweet tweet = new Tweet();
 	    tweet.setBeginDate(event.getBeginDate());
 	    
-	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(tweet, tweetSharerAdd));
+	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(new TweetContext(tweet, model), addTweetSharer));
 	    
 	    AnnotateDataBinder adb = new AnnotateDataBinder(bookEventWin);
 	    adb.loadAll();
@@ -124,7 +103,13 @@ public class TwitterController extends GenericForwardComposer {
 			return;
 		}
 		
-		editEventWin = Executions.createComponents("macro/bookEdit.zul", win, generateArguments(tweet, tweetSharerUpdate));
+		TweetContext tweetContext = TweetManager.INSTANCE.getTweet(tweet);
+		
+		if(tweetContext == null) {
+			tweetContext = new TweetContext(tweet, model);
+		}
+		
+		editEventWin = Executions.createComponents("macro/bookEdit.zul", win, generateArguments(tweetContext, updateTweetSharer));
 		
 		AnnotateDataBinder adb = new AnnotateDataBinder(editEventWin);
 	    adb.loadAll();
@@ -136,13 +121,19 @@ public class TwitterController extends GenericForwardComposer {
 		Tweet tweet = (Tweet)event.getCalendarEvent();
 		
 		if(tweet.isTweeted()) {
-			alert("You cannot edit this tweet it has already been tweeted");
+			alert("You cannot update this tweet it has already been tweeted");
 			return;
 		}
 		
-		if(event.getBeginDate().equals(event.getBeginDate())) {
+		if(event.getBeginDate().equals(tweet.getBeginDate())) {
 			event.clearGhost();
 			return;
+		}
+		
+		TweetContext tweetContext = TweetManager.INSTANCE.getTweet(tweet);
+		
+		if(tweetContext == null) {
+			tweetContext = new TweetContext(tweet, model);
 		}
 		
 		tweet.setBeginDate(event.getBeginDate());
@@ -151,12 +142,12 @@ public class TwitterController extends GenericForwardComposer {
 		model.update(tweet);		
 	}
 	
-	private Map<String, GenericSharer<Tweet>> generateArguments(Tweet tweet, GenericSharer<Tweet> genericSharer) {
+	private Map<String, GenericSharer<TweetContext>> generateArguments(TweetContext tweetContext, GenericSharer<TweetContext> genericSharer) {
 		    
-		Map<String, GenericSharer<Tweet>> map = new HashMap<String, GenericSharer<Tweet>>();
+		Map<String, GenericSharer<TweetContext>> map = new HashMap<String, GenericSharer<TweetContext>>();
 	        
-		genericSharer.setBean(tweet);
-	    map.put("tweet", genericSharer);
+		genericSharer.setBean(tweetContext);
+	    map.put("tweetContext", genericSharer);
 	    
 	    return map;
 	}
