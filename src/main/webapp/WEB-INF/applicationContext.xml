@@ -7,7 +7,10 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
 		http://www.zkoss.org/2008/zkspring/core http://www.zkoss.org/2008/zkspring/core/zkspring-core.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.zkoss.org/2008/zkspring/core http://www.zkoss.org/2008/zkspring/core/zkspring-core.xsd">
+	
+	<zksp:zk-config/>
 	
 	<context:component-scan 
 		base-package="me.timothyclare.tawny" />
@@ -45,11 +48,19 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="myTweetDao" class="me.timothyclare.tawny.hibernate.TweetDaoImpl">
+	<bean id="myTweetDao" class="me.timothyclare.tawny.dao.TweetDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="myTwitterController" class="me.timothyclare.tawny.controllers.TwitterController" scope="prototype">
+	<bean id="myTweetService" class="me.timothyclare.tawny.twitter.TweetServiceImpl" scope="application">
 		<property name="tweetDao" ref="myTweetDao" />
+	</bean>
+	
+	<bean id="myTweetModelExtListener" class="me.timothyclare.tawny.model.TweetModelExtListener" scope="desktop">
+		<property name="tweetService" ref="myTweetService" />
+	</bean>
+	
+	<bean id="myTwitterController" class="me.timothyclare.tawny.controllers.TwitterController" scope="prototype">
+		<property name="tweetModelExtListener" ref="myTweetModelExtListener" />
 	</bean>
 </beans>

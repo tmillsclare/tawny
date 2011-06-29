@@ -1,5 +1,5 @@
 
-package me.timothyclare.tawny.hibernate;
+package me.timothyclare.tawny.dao.api;
 
 import java.util.List;
 

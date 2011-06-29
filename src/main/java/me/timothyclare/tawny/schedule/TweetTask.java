@@ -3,7 +3,7 @@ package me.timothyclare.tawny.schedule;
 import java.util.TimerTask;
 
 import me.timothyclare.tawny.bean.Tweet;
-import me.timothyclare.tawny.hibernate.TweetDao;
+import me.timothyclare.tawny.dao.api.TweetDao;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

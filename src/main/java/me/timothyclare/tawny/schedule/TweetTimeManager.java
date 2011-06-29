@@ -1,40 +1,43 @@
 package me.timothyclare.tawny.schedule;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 
-import me.timothyclare.tawny.bean.TweetContext;
+import me.timothyclare.tawny.bean.Tweet;
 
 public enum TweetTimeManager {
+	
 	INSTANCE;
 	
+	private Map<Tweet, TweetTask> scheduledTasks = new HashMap<Tweet, TweetTask>();
 	private Timer _timer =  new Timer();
 	
-	public void scheduleTweet(TweetContext tweetContext, Date time) {
+	public void scheduleTweet(Tweet tweet) {
 		
-		if(tweetContext == null) {
+		if(tweet == null) {
 			throw new NullPointerException("The argument tweetContext cannot be null");
 		}
 		
-		TweetTask tweetTask = new TweetTask(tweetContext.getTweet());
-		_timer.schedule(tweetTask, time);
-		tweetContext.setTweetTask(tweetTask);
+		TweetTask tweetTask = new TweetTask(tweet);
+		_timer.schedule(tweetTask, tweet.getBeginDate());
+		scheduledTasks.put(tweet, tweetTask);
 		
 	}
 	
-	public void cancelAll() {
-		_timer.cancel();
-	}
-	
-	public boolean cancelTweet(TweetContext tweetContext) {
+	public boolean cancelTweet(Tweet tweet) {
 		
 		boolean result = false;
 		
-		if (tweetContext == null) {
+		if (tweet == null) {
 			throw new NullPointerException("The argument tweetContext cannot be null");
 		}
 		
-		result = tweetContext.getTweetTask().cancel();
+		TweetTask tt = scheduledTasks.remove(tweet);
+		
+		if(tt != null) {
+			result = tt.cancel();
+		}
 		
 		return result;
 	}

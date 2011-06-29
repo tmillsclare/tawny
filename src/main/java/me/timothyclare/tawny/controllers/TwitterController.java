@@ -1,23 +1,19 @@
 package me.timothyclare.tawny.controllers;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import me.timothyclare.tawny.bean.Tweet;
-import me.timothyclare.tawny.bean.TweetContext;
 import me.timothyclare.tawny.bean.sharer.GenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetAddGenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetUpdateGenericSharer;
+import me.timothyclare.tawny.dao.TokenDAO;
 import me.timothyclare.tawny.exceptions.token.TokenException;
-import me.timothyclare.tawny.hibernate.TokenDAO;
-import me.timothyclare.tawny.hibernate.TweetDao;
+import me.timothyclare.tawny.model.TweetModelExtListener;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 
 import org.zkoss.calendar.Calendars;
-import org.zkoss.calendar.api.CalendarEvent;
 import org.zkoss.calendar.event.CalendarsEvent;
-import org.zkoss.calendar.impl.SimpleCalendarModel;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Page;
@@ -38,16 +34,14 @@ public class TwitterController extends GenericForwardComposer {
 	private Component bookEventWin, editEventWin;
 	private Window win;
 	private Calendars cal;
-    
-	private final SimpleCalendarModel model = new SimpleCalendarModel();
 	
 	private static final TweetAddGenericSharer addTweetSharer = new TweetAddGenericSharer();
 	private static final TweetUpdateGenericSharer updateTweetSharer = new TweetUpdateGenericSharer();
 	
-	private TweetDao tweetDao;
+	private TweetModelExtListener model;
 	
-	public void setTweetDao(TweetDao tweetDao) {
-		this.tweetDao = tweetDao;
+	public void setTweetModelExtListener(TweetModelExtListener model) {
+		this.model = model;
 	}
 	
 	@Override
@@ -75,15 +69,6 @@ public class TwitterController extends GenericForwardComposer {
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
-		
-		List<Tweet> tweets = tweetDao.findAll();
-		CalendarEvent[] calendarEvents = new CalendarEvent[tweets.size()];
-		tweets.toArray(calendarEvents);
-			
-		if (!tweets.isEmpty()) {
-			for (CalendarEvent ce : calendarEvents) { model.add(ce);}
-		}
-		
 		cal.setModel(model);
 	}
 	
@@ -92,7 +77,7 @@ public class TwitterController extends GenericForwardComposer {
 		Tweet tweet = new Tweet();
 	    tweet.setBeginDate(event.getBeginDate());
 	    
-	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(new TweetContext(tweet, model), addTweetSharer));
+	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(tweet, addTweetSharer));
 	    
 	    AnnotateDataBinder adb = new AnnotateDataBinder(bookEventWin);
 	    adb.loadAll();
@@ -108,13 +93,7 @@ public class TwitterController extends GenericForwardComposer {
 			return;
 		}
 		
-		TweetContext tweetContext = TweetManager.INSTANCE.getTweet(tweet);
-		
-		if(tweetContext == null) {
-			tweetContext = new TweetContext(tweet, model);
-		}
-		
-		editEventWin = Executions.createComponents("macro/bookEdit.zul", win, generateArguments(tweetContext, updateTweetSharer));
+		editEventWin = Executions.createComponents("macro/bookEdit.zul", win, generateArguments(tweet, updateTweetSharer));
 		
 		AnnotateDataBinder adb = new AnnotateDataBinder(editEventWin);
 	    adb.loadAll();
@@ -135,24 +114,16 @@ public class TwitterController extends GenericForwardComposer {
 			return;
 		}
 		
-		TweetContext tweetContext = TweetManager.INSTANCE.getTweet(tweet);
-		
-		if(tweetContext == null) {
-			tweetContext = new TweetContext(tweet, model);
-		}
-		
 		tweet.setBeginDate(event.getBeginDate());
-		
-		tweetDao.update(tweet);
 		model.update(tweet);		
 	}
 	
-	private Map<String, GenericSharer<TweetContext>> generateArguments(TweetContext tweetContext, GenericSharer<TweetContext> genericSharer) {
+	private Map<String, GenericSharer<Tweet>> generateArguments(Tweet tweet, GenericSharer<Tweet> genericSharer) {
 		    
-		Map<String, GenericSharer<TweetContext>> map = new HashMap<String, GenericSharer<TweetContext>>();
+		Map<String, GenericSharer<Tweet>> map = new HashMap<String, GenericSharer<Tweet>>();
 	        
-		genericSharer.setBean(tweetContext);
-	    map.put("tweetContext", genericSharer);
+		genericSharer.setBean(tweet);
+	    map.put("tweet", genericSharer);
 	    
 	    return map;
 	}

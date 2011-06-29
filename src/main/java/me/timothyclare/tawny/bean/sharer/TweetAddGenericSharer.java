@@ -1,13 +1,23 @@
 package me.timothyclare.tawny.bean.sharer;
 
-import me.timothyclare.tawny.bean.TweetContext;
-import me.timothyclare.tawny.twitter.TweetManager;
+import me.timothyclare.tawny.bean.Tweet;
+import me.timothyclare.tawny.model.TweetModelExtListener;
 
-public class TweetAddGenericSharer extends AbstractGenericSharer<TweetContext> {
+import org.zkoss.zkplus.spring.SpringUtil;
+
+public class TweetAddGenericSharer extends AbstractGenericSharer<Tweet> {
 
 	@Override
 	public void update() {
-		TweetManager.INSTANCE.addTweet(getBean());		
+		Object object = SpringUtil.getBean("myTweetModelExtListener");
+		
+		if(!(object instanceof TweetModelExtListener)) {
+			throw new  RuntimeException("Unexpected object");
+			//TODO: Change this to a valid exception
+		}
+		
+		TweetModelExtListener tweetModel = (TweetModelExtListener)object;
+		tweetModel.add(getBean());
 	}
 
 }

@@ -1,11 +1,11 @@
 
 <window id="tweetbooking" title="Tweet" border="normal"
 	mode="modal" visible="false">
-	<custom-attributes tweetinst="${arg.tweetContext}"/>
+	<custom-attributes tweetinst="${arg.tweet}"/>
 	<grid width="400px">
 		<rows>
 			<row vflex="1" spans="2">
-				<textbox id="tbNote" hflex="true" vflex="true" value="@{tweetinst.bean.tweet.content, save-when='btnCreate.onClick'}" />
+				<textbox id="tbNote" hflex="true" vflex="true" value="@{tweetinst.bean.content, save-when='btnCreate.onClick'}" />
 			</row>
 			<row vflex="1" spans="2">
 				<hlayout>

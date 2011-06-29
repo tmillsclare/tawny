@@ -2,7 +2,7 @@ package me.timothyclare.tawny.controllers;
 
 import me.timothyclare.tawny.TwitterService;
 import me.timothyclare.tawny.exceptions.token.TokenNotAccessible;
-import me.timothyclare.tawny.hibernate.TokenDAO;
+import me.timothyclare.tawny.dao.TokenDAO;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 
 import org.zkoss.zk.ui.Component;

@@ -1,8 +1,9 @@
-package me.timothyclare.tawny.hibernate;
+package me.timothyclare.tawny.dao;
 
 import java.util.List;
 
 import me.timothyclare.tawny.bean.Tweet;
+import me.timothyclare.tawny.dao.api.TweetDao;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
