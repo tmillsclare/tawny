@@ -3,7 +3,7 @@ package me.timothyclare.tawny.schedule;
 import java.util.TimerTask;
 
 import me.timothyclare.tawny.bean.Tweet;
-import me.timothyclare.tawny.hibernate.TweetDAO;
+import me.timothyclare.tawny.hibernate.TweetDao;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -14,6 +14,12 @@ public class TweetTask extends TimerTask {
 
 	public TweetTask(Tweet tweet) {
 		this.tweet = tweet;
+	}
+	
+	private TweetDao tweetDao;
+	
+	public void setTweetDao(TweetDao tweetDao) {
+		this.tweetDao = tweetDao;
 	}
 
 	@Override
@@ -27,7 +33,7 @@ public class TweetTask extends TimerTask {
 		try {
 			twitter.updateStatus(tweet.getContent());
 			tweet.setTweeted(true);
-			TweetDAO.update(tweet);
+			tweetDao.update(tweet);
 		} catch (TwitterException e) {
 			tweet.setTweeted(false);
 		}

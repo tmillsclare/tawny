@@ -11,8 +11,7 @@ import me.timothyclare.tawny.bean.sharer.TweetAddGenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetUpdateGenericSharer;
 import me.timothyclare.tawny.exceptions.token.TokenException;
 import me.timothyclare.tawny.hibernate.TokenDAO;
-import me.timothyclare.tawny.hibernate.TweetDAO;
-import me.timothyclare.tawny.twitter.TweetManager;
+import me.timothyclare.tawny.hibernate.TweetDao;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 
 import org.zkoss.calendar.Calendars;
@@ -45,6 +44,12 @@ public class TwitterController extends GenericForwardComposer {
 	private static final TweetAddGenericSharer addTweetSharer = new TweetAddGenericSharer();
 	private static final TweetUpdateGenericSharer updateTweetSharer = new TweetUpdateGenericSharer();
 	
+	private TweetDao tweetDao;
+	
+	public void setTweetDao(TweetDao tweetDao) {
+		this.tweetDao = tweetDao;
+	}
+	
 	@Override
 	public ComponentInfo doBeforeCompose(Page page, Component parent,
 			ComponentInfo compInfo) {
@@ -71,7 +76,7 @@ public class TwitterController extends GenericForwardComposer {
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		
-		List<Tweet> tweets = TweetDAO.findAll();
+		List<Tweet> tweets = tweetDao.findAll();
 		CalendarEvent[] calendarEvents = new CalendarEvent[tweets.size()];
 		tweets.toArray(calendarEvents);
 			
@@ -138,7 +143,7 @@ public class TwitterController extends GenericForwardComposer {
 		
 		tweet.setBeginDate(event.getBeginDate());
 		
-		TweetDAO.update(tweet);
+		tweetDao.update(tweet);
 		model.update(tweet);		
 	}
 	

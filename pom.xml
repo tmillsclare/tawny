@@ -28,6 +28,9 @@
 		<timelinez.version>2.3.1_50</timelinez.version>
 		<timeplotz.version>1.1_50</timeplotz.version>
 		<gmapsz.version>2.0-3</gmapsz.version> <!-- Should 2.5x BUT maven @zkoss not update -->
+		<zkspring-core.version>3.0</zkspring-core.version>
+		<zkspring.version>3.0</zkspring.version>
+		<spring.version>3.0.5.RELEASE</spring.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -93,6 +96,11 @@
 			<version>${commons-io.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
 			<groupId>org.zkoss.zk</groupId>
 			<artifactId>zk</artifactId>
 			<version>${zk.version}</version>
@@ -131,6 +139,11 @@
 			<groupId>org.zkoss.zkforge.el</groupId>
 			<artifactId>zcommons-el</artifactId>
 			<version>${zkel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zkspring-core</artifactId>
+			<version>${zkspring.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -221,6 +234,62 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.1.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.persistence</groupId>
