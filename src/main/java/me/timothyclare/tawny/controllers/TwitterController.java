@@ -1,5 +1,6 @@
 package me.timothyclare.tawny.controllers;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zkplus.databind.AnnotateDataBinder;
 import org.zkoss.zul.Window;
@@ -82,6 +84,11 @@ public class TwitterController extends GenericForwardComposer {
 	
 	public void onEventCreate$cal(CalendarsEvent event){     
 	    
+		if(!validateDate(event.getBeginDate())) {
+			Clients.alert("You cannot schedule a tweet retrospectively");
+			return;
+		}
+		
 		Tweet tweet = new Tweet();
 	    tweet.setBeginDate(event.getBeginDate());
 	    
@@ -112,6 +119,11 @@ public class TwitterController extends GenericForwardComposer {
 	public void onEventUpdate$cal(CalendarsEvent event) {
 		Tweet tweet = (Tweet)event.getCalendarEvent();
 		
+		if(!validateDate(event.getBeginDate())) {
+			Clients.alert("You cannot update this tweet and schedule it retrospectively");
+			return;
+		}
+		
 		if(tweet.isTweeted()) {
 			alert("You cannot update this tweet it has already been tweeted");
 			return;
@@ -134,5 +146,15 @@ public class TwitterController extends GenericForwardComposer {
 	    map.put("tweet", genericSharer);
 	    
 	    return map;
+	}
+	
+	private boolean validateDate(Date test) {
+		final Date now = new Date();
+		
+		if(test.before(now)) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
