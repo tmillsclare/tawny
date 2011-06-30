@@ -52,8 +52,13 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="myTweetService" class="me.timothyclare.tawny.twitter.TweetServiceImpl" scope="application">
+	<bean id="myTweetService" class="me.timothyclare.tawny.twitter.TweetServiceImpl">
 		<property name="tweetDao" ref="myTweetDao" />
+		<property name="tweetTimeManager" ref="myTweetTimeManager" />
+	</bean>
+	
+	<bean id="myTweetTimeManager" class="me.timothyclare.tawny.schedule.TweetTimeManager">
+		<property name="tweetService" ref="myTweetService" />
 	</bean>
 	
 	<bean id="myTweetModelExtListener" class="me.timothyclare.tawny.model.TweetModelExtListener" scope="desktop">
@@ -62,5 +67,9 @@
 	
 	<bean id="myTwitterController" class="me.timothyclare.tawny.controllers.TwitterController" scope="prototype">
 		<property name="tweetModelExtListener" ref="myTweetModelExtListener" />
+	</bean>
+	
+	<bean id="tweetTask" class="me.timothyclare.tawny.schedule.TweetTask" scope="prototype">
+		<property name="tweetService" ref="myTweetService" />
 	</bean>
 </beans>

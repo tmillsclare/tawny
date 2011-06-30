@@ -14,11 +14,15 @@ public class TweetServiceImpl implements TweetService {
 	private final List<Tweet> tweets = new ArrayList<Tweet>();
 
 	private TweetDao tweetDao;
+	private TweetTimeManager tweetTimeManager;
 	
 	public void setTweetDao(TweetDao tweetDao) {
 		this.tweetDao = tweetDao;
 	}
 	
+	public void setTweetTimeManager(TweetTimeManager tweetTimeManager) {
+		this.tweetTimeManager = tweetTimeManager;
+	}
 	
 	public List<Tweet> all() {
 		return tweets;
@@ -27,23 +31,23 @@ public class TweetServiceImpl implements TweetService {
 	public void add(Tweet tweet) {
 		tweetDao.add(tweet);
 		tweets.add(tweet);
-		TweetTimeManager.INSTANCE.scheduleTweet(tweet);
+		tweetTimeManager.scheduleTweet(tweet);
 
 		EventQueueHelper.INSTANCE.getEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.ADDED));
 	}
 
 	public void update(Tweet tweet) {
 		tweetDao.update(tweet);
-		boolean result = TweetTimeManager.INSTANCE.cancelTweet(tweet);
+		boolean result = tweetTimeManager.cancelTweet(tweet);
 		
 		if(result) {
-			TweetTimeManager.INSTANCE.scheduleTweet(tweet);
+			tweetTimeManager.scheduleTweet(tweet);
 			EventQueueHelper.INSTANCE.getEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.UPDATED));
 		}
 	}
 
 	public void remove(Tweet tweet) {
-		boolean result = TweetTimeManager.INSTANCE.cancelTweet(tweet);
+		boolean result = tweetTimeManager.cancelTweet(tweet);
 		
 		if(result) {
 			tweetDao.remove(tweet);

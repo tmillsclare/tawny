@@ -5,13 +5,18 @@ import java.util.Map;
 import java.util.Timer;
 
 import me.timothyclare.tawny.bean.Tweet;
+import me.timothyclare.tawny.twitter.TweetService;
 
-public enum TweetTimeManager {
-	
-	INSTANCE;
-	
+public class TweetTimeManager {
+		
 	private Map<Tweet, TweetTask> scheduledTasks = new HashMap<Tweet, TweetTask>();
 	private Timer _timer =  new Timer();
+	
+	private TweetService tweetService;
+	
+	public void setTweetService(TweetService tweetService) {
+		this.tweetService = tweetService;
+	}
 	
 	public void scheduleTweet(Tweet tweet) {
 		
@@ -19,7 +24,10 @@ public enum TweetTimeManager {
 			throw new NullPointerException("The argument tweetContext cannot be null");
 		}
 		
-		TweetTask tweetTask = new TweetTask(tweet);
+		TweetTask tweetTask = new TweetTask();
+		tweetTask.setTweet(tweet);
+		tweetTask.setTweetService(tweetService);
+		
 		_timer.schedule(tweetTask, tweet.getBeginDate());
 		scheduledTasks.put(tweet, tweetTask);
 		
