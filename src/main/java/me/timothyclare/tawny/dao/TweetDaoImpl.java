@@ -8,13 +8,16 @@ import me.timothyclare.tawny.dao.api.TweetDao;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Component
 public class TweetDaoImpl implements TweetDao {
 	
-	@Autowired
+	
 	SessionFactory sessionFactory;
 	
+	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}

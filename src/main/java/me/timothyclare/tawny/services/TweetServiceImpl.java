@@ -1,4 +1,4 @@
-package me.timothyclare.tawny.twitter;
+package me.timothyclare.tawny.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,12 @@ import me.timothyclare.tawny.dao.api.TweetDao;
 import me.timothyclare.tawny.event.TweetEvent;
 import me.timothyclare.tawny.model.EventQueueHelper;
 import me.timothyclare.tawny.schedule.TweetTimeManager;
+import me.timothyclare.tawny.services.api.TweetService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class TweetServiceImpl implements TweetService {
 
 	private final List<Tweet> tweets = new ArrayList<Tweet>();
@@ -16,10 +21,12 @@ public class TweetServiceImpl implements TweetService {
 	private TweetDao tweetDao;
 	private TweetTimeManager tweetTimeManager;
 	
+	@Autowired
 	public void setTweetDao(TweetDao tweetDao) {
 		this.tweetDao = tweetDao;
 	}
 	
+	@Autowired
 	public void setTweetTimeManager(TweetTimeManager tweetTimeManager) {
 		this.tweetTimeManager = tweetTimeManager;
 	}

@@ -1,4 +1,4 @@
-package me.timothyclare.tawny.twitter;
+package me.timothyclare.tawny.services.api;
 
 import java.util.List;
 

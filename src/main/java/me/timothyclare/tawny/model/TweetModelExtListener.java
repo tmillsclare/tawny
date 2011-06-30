@@ -7,14 +7,19 @@ import java.util.List;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.event.TweetEvent;
 import me.timothyclare.tawny.model.api.AbstractCalendarModelExt;
-import me.timothyclare.tawny.twitter.TweetService;
+import me.timothyclare.tawny.services.api.TweetService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.zkoss.calendar.api.CalendarEvent;
 import org.zkoss.calendar.api.RenderContext;
 import org.zkoss.calendar.event.CalendarDataEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 
+@Component
+@Scope("desktop")
 public class TweetModelExtListener extends AbstractCalendarModelExt<Tweet> implements EventListener {
 
 	/**
@@ -24,6 +29,7 @@ public class TweetModelExtListener extends AbstractCalendarModelExt<Tweet> imple
 	
 	private TweetService tweetService;
 	
+	@Autowired
 	public void setTweetService(TweetService tweetService) {
 		this.tweetService = tweetService;
 	}
@@ -59,8 +65,10 @@ public class TweetModelExtListener extends AbstractCalendarModelExt<Tweet> imple
 			break;
 		case REMOVED:
 			fireEvent(CalendarDataEvent.INTERVAL_REMOVED, evt.getTweet());
+			break;
 		case UPDATED:
 			fireEvent(CalendarDataEvent.CONTENTS_CHANGED, evt.getTweet());
+			break;
 		}
 	}
 

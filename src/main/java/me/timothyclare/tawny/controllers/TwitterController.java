@@ -3,15 +3,16 @@ package me.timothyclare.tawny.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.bean.sharer.GenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetAddGenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetUpdateGenericSharer;
-import me.timothyclare.tawny.dao.TokenDAO;
-import me.timothyclare.tawny.exceptions.token.TokenException;
 import me.timothyclare.tawny.model.TweetModelExtListener;
-import me.timothyclare.tawny.twitter.TwitterUtil;
+import me.timothyclare.tawny.services.api.ProfileService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.zkoss.calendar.Calendars;
 import org.zkoss.calendar.event.CalendarsEvent;
 import org.zkoss.zk.ui.Component;
@@ -22,8 +23,8 @@ import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zkplus.databind.AnnotateDataBinder;
 import org.zkoss.zul.Window;
 
-import twitter4j.Twitter;
-
+@org.springframework.stereotype.Component
+@Scope("prototype")
 public class TwitterController extends GenericForwardComposer {
 	
 	/**
@@ -39,29 +40,36 @@ public class TwitterController extends GenericForwardComposer {
 	private static final TweetUpdateGenericSharer updateTweetSharer = new TweetUpdateGenericSharer();
 	
 	private TweetModelExtListener model;
+	private ProfileService profileService;
 	
+	@Autowired
 	public void setTweetModelExtListener(TweetModelExtListener model) {
 		this.model = model;
+	}
+	
+	@Autowired
+	public void setProfileService(ProfileService profileService) {
+		this.profileService = profileService;
 	}
 	
 	@Override
 	public ComponentInfo doBeforeCompose(Page page, Component parent,
 			ComponentInfo compInfo) {
 		
-		try {
-			TokenDAO.getToken(); //test to see whether a token exists
-			Twitter twitter = TwitterUtil.INSTANCE.getTwitter();
-
-			if(twitter != null) {
-				if(!twitter.getAuthorization().isEnabled()) { //if not authorized it we need a new token
+		if(profileService.profileExists("official")) {
+			
+			Profile profile = profileService.getProfile("official");
+			
+			if(profile == null) {
+				Executions.sendRedirect("token.zul");
+			} else {
+				if(!profile.getTwitter().getAuthorization().isEnabled()) {
 					Executions.sendRedirect("token.zul");
 				}
-			} else {
-				throw new RuntimeException("Could not retrieve twitter");
 			}
-		} catch (TokenException e) {
-			Executions.sendRedirect("token.zul");			
-		} 
+		} else {
+			Executions.sendRedirect("token.zul");
+		}
 		
 		return super.doBeforeCompose(page, parent, compInfo);
 	}

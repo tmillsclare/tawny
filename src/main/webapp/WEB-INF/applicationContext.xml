@@ -32,44 +32,22 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>me.timothyclare.tawny.bean.Tweet</value>
+				<value>me.timothyclare.tawny.bean.Token</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
-			<value>
-				hibernate.dialect=org.hibernate.dialect.HSQLDialect
-      		</value>
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
 		</property>
 	</bean>
 	
-	<tx:annotation-driven/>
-
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
-	<bean id="myTweetDao" class="me.timothyclare.tawny.dao.TweetDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
 	
-	<bean id="myTweetService" class="me.timothyclare.tawny.twitter.TweetServiceImpl">
-		<property name="tweetDao" ref="myTweetDao" />
-		<property name="tweetTimeManager" ref="myTweetTimeManager" />
-	</bean>
-	
-	<bean id="myTweetTimeManager" class="me.timothyclare.tawny.schedule.TweetTimeManager">
-		<property name="tweetService" ref="myTweetService" />
-	</bean>
-	
-	<bean id="myTweetModelExtListener" class="me.timothyclare.tawny.model.TweetModelExtListener" scope="desktop">
-		<property name="tweetService" ref="myTweetService" />
-	</bean>
-	
-	<bean id="myTwitterController" class="me.timothyclare.tawny.controllers.TwitterController" scope="prototype">
-		<property name="tweetModelExtListener" ref="myTweetModelExtListener" />
-	</bean>
-	
-	<bean id="tweetTask" class="me.timothyclare.tawny.schedule.TweetTask" scope="prototype">
-		<property name="tweetService" ref="myTweetService" />
-	</bean>
+	<tx:annotation-driven/>
 </beans>

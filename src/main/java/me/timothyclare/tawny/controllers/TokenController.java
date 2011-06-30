@@ -1,14 +1,14 @@
 package me.timothyclare.tawny.controllers;
 
-import me.timothyclare.tawny.TwitterService;
-import me.timothyclare.tawny.exceptions.token.TokenNotAccessible;
-import me.timothyclare.tawny.dao.TokenDAO;
+import me.timothyclare.tawny.dao.api.TokenDao;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 
+import org.springframework.context.annotation.Scope;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
+import org.zkoss.zkplus.spring.SpringUtil;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Textbox;
@@ -18,6 +18,8 @@ import twitter4j.TwitterException;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
+@org.springframework.stereotype.Component
+@Scope("prototype")
 public class TokenController extends GenericForwardComposer {
 
 	/**
@@ -36,7 +38,7 @@ public class TokenController extends GenericForwardComposer {
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		
-		twitter = TwitterUtil.INSTANCE.getTwitter();
+		twitter = TwitterUtil.INSTANCE.buildTwitter();
 
 		if (twitter == null)
 			throw new RuntimeException(
@@ -47,8 +49,7 @@ public class TokenController extends GenericForwardComposer {
 			requestToken = twitter.getOAuthRequestToken();
 		} catch(TwitterException te) {
 			//this didn't work let's rebuild and try again
-			twitter = TwitterUtil.INSTANCE.buildTwitter(TwitterService.CONSUMERKEY, TwitterService.CONSUMERSECRET);
-			requestToken = twitter.getOAuthRequestToken();
+			throw new RuntimeException("Cannot create twitter instance");
 		}
 		
 		authlink.setHref(requestToken.getAuthorizationURL());
@@ -66,11 +67,12 @@ public class TokenController extends GenericForwardComposer {
 				accessToken = twitter.getOAuthAccessToken();
 			}
 			
-			try {
-				TokenDAO.setToken(accessToken);
-			} catch (TokenNotAccessible e1) {
-				e1.printStackTrace();
+			
+			TokenDao tokenDao = SpringUtil.getApplicationContext().getBean(TokenDao.class);
+			if(!tokenDao.save("official", accessToken)) {
+				throw new RuntimeException("Couldn't persiste the token!");
 			}
+
 			
 			Executions.sendRedirect("index.zul");
 			

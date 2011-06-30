@@ -9,15 +9,14 @@ public class TweetUpdateGenericSharer extends AbstractGenericSharer<Tweet> {
 
 	@Override
 	public void update() {
-		Object object = SpringUtil.getBean("myTweetModelExtListener");
+		TweetModelExtListener model = SpringUtil.getApplicationContext().getBean(TweetModelExtListener.class);
 		
-		if(!(object instanceof TweetModelExtListener)) {
-			throw new  RuntimeException("Unexpected object");
+		if(model == null) {
+			throw new  NullPointerException("The model cannot be null");
 			//TODO: Change this to a valid exception
 		}
 		
-		TweetModelExtListener tweetModel = (TweetModelExtListener)object;
-		tweetModel.update(getBean());
+		model.update(getBean());
 	}
 
 }
