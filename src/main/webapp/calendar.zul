@@ -1,0 +1,6 @@
+<?page title="Auto Generated index.zul"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<window id="win" border="none" hflex="true" vflex="true" apply="${ twitterController }">
+	<calendars id="cal" firstDayOfWeek="Sunday" mold="default" model="${win$composer.calendarModel }" />
+</window>

@@ -3,10 +3,10 @@ package me.timothyclare.tawny.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.timothyclare.tawny.TawnyApp;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.dao.api.TweetDao;
 import me.timothyclare.tawny.event.TweetEvent;
-import me.timothyclare.tawny.model.EventQueueHelper;
 import me.timothyclare.tawny.schedule.TweetTimeManager;
 import me.timothyclare.tawny.services.api.TweetService;
 
@@ -39,8 +39,8 @@ public class TweetServiceImpl implements TweetService {
 		tweetDao.add(tweet);
 		tweets.add(tweet);
 		tweetTimeManager.scheduleTweet(tweet);
-
-		EventQueueHelper.INSTANCE.getEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.ADDED));
+		
+		TawnyApp.getTawnyApp().getTweetEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.ADDED));
 	}
 
 	public void update(Tweet tweet) {
@@ -57,7 +57,7 @@ public class TweetServiceImpl implements TweetService {
 		}
 		
 		if(publish) {
-			EventQueueHelper.INSTANCE.getEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.UPDATED));
+			TawnyApp.getTawnyApp().getTweetEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.UPDATED));
 		}
 	}
 
@@ -67,7 +67,7 @@ public class TweetServiceImpl implements TweetService {
 		if(result) {
 			tweetDao.remove(tweet);
 			tweets.remove(tweet);
-			EventQueueHelper.INSTANCE.getEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.REMOVED));
+			TawnyApp.getTawnyApp().getTweetEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.REMOVED));
 		}
 	}
 }

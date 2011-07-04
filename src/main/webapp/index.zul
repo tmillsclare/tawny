@@ -1,6 +1,13 @@
 <?page title="Auto Generated index.zul"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 
-<window title="Hello World!!" id="win" border="normal" hflex="true" vflex="true" apply="${ twitterController }">
-	<calendars id="cal" firstDayOfWeek="Sunday" mold="default" />
+<window id="win" border="normal" hflex="true" vflex="true" apply="${ profileController }">
+	<window hflex="1" border="normal" title="Create new profile">
+		<textbox id="txtName" />
+		<button id="btnCreateProfile" />
+	</window>
+	<window hflex="1" border="normal" title="Select profile">
+		<listbox mold="select" selectedIndex="-1" id="txtName" />
+		<button id="btnSelectProfile" />
+	</window>
 </window>

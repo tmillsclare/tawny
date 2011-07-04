@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.bean.sharer.GenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetAddGenericSharer;
@@ -14,12 +13,10 @@ import me.timothyclare.tawny.services.api.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.zkoss.calendar.Calendars;
+import org.zkoss.calendar.api.CalendarModel;
 import org.zkoss.calendar.event.CalendarsEvent;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.Page;
-import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zkplus.databind.AnnotateDataBinder;
@@ -36,7 +33,6 @@ public class TwitterController extends GenericForwardComposer {
 		
 	private Component bookEventWin, editEventWin;
 	private Window win;
-	private Calendars cal;
 	
 	private static final TweetAddGenericSharer addTweetSharer = new TweetAddGenericSharer();
 	private static final TweetUpdateGenericSharer updateTweetSharer = new TweetUpdateGenericSharer();
@@ -49,37 +45,13 @@ public class TwitterController extends GenericForwardComposer {
 		this.model = model;
 	}
 	
+	public CalendarModel getCalendarModel() {
+		return this.model;
+	}
+	
 	@Autowired
 	public void setProfileService(ProfileService profileService) {
 		this.profileService = profileService;
-	}
-	
-	@Override
-	public ComponentInfo doBeforeCompose(Page page, Component parent,
-			ComponentInfo compInfo) {
-		
-		if(profileService.profileExists("official")) {
-			
-			Profile profile = profileService.getProfile("official");
-			
-			if(profile == null) {
-				Executions.sendRedirect("token.zul");
-			} else {
-				if(!profile.getTwitter().getAuthorization().isEnabled()) {
-					Executions.sendRedirect("token.zul");
-				}
-			}
-		} else {
-			Executions.sendRedirect("token.zul");
-		}
-		
-		return super.doBeforeCompose(page, parent, compInfo);
-	}
-
-	@Override
-	public void doAfterCompose(Component comp) throws Exception {
-		super.doAfterCompose(comp);
-		cal.setModel(model);
 	}
 	
 	public void onEventCreate$cal(CalendarsEvent event){     
@@ -104,7 +76,7 @@ public class TwitterController extends GenericForwardComposer {
 		Tweet tweet = (Tweet)event.getCalendarEvent();
 		
 		if(tweet.isTweeted()) {
-			alert("You cannot edit this tweet it has already been tweeted");
+			Clients.alert("You cannot edit this tweet it has already been tweeted");
 			return;
 		}
 		
@@ -131,7 +103,6 @@ public class TwitterController extends GenericForwardComposer {
 		}
 		
 		if(event.getBeginDate().equals(tweet.getBeginDate())) {
-			
 			return;
 		}
 		

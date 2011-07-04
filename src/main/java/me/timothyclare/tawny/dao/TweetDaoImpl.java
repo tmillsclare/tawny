@@ -23,7 +23,7 @@ public class TweetDaoImpl implements TweetDao {
 	}
 	
 	@Transactional
-	public List<Tweet> findAll() {
+	public List<Tweet> getAll() {
 		Query query = sessionFactory.getCurrentSession().createQuery(
 				"from Tweet");
 

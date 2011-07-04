@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import me.timothyclare.tawny.TawnyApp;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.event.TweetEvent;
 import me.timothyclare.tawny.model.api.AbstractCalendarModelExt;
@@ -35,7 +36,7 @@ public class TweetModelExtListener extends AbstractCalendarModelExt<Tweet> imple
 	}
 	
 	public TweetModelExtListener() {
-		EventQueueHelper.INSTANCE.getEventQueue().subscribe(this);
+		TawnyApp.getTawnyApp().getTweetEventQueue().subscribe(this);
 	}
 
 	@Override

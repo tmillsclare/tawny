@@ -1,0 +1,7 @@
+<window id="profile" title="Tweet" border="normal"
+	mode="modal" visible="false" apply="${ tokenController }">
+	<label id="lblName" value="${arg.name }"
+	Click on the following link and then place your token below: <a id="authlink" href="#" />
+	Token: <textbox id="token" />
+	<button id="submit" label="Submit Token" />
+</window>

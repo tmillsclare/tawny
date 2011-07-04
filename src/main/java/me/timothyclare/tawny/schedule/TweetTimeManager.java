@@ -17,17 +17,11 @@ public class TweetTimeManager {
 	private Map<Tweet, TweetTask> scheduledTasks = new HashMap<Tweet, TweetTask>();
 	private Timer _timer =  new Timer();
 	
-	private TweetService tweetService;
-	private ProfileService profileService;	
+	private TweetService tweetService;	
 	
 	@Autowired
 	public void setTweetService(TweetService tweetService) {
 		this.tweetService = tweetService;
-	}
-	
-	@Autowired
-	public void setProfileService(ProfileService profileService) {
-		this.profileService = profileService;
 	}
 	
 	public void scheduleTweet(Tweet tweet) {

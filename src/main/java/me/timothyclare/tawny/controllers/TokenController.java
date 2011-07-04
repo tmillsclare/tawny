@@ -1,17 +1,18 @@
 package me.timothyclare.tawny.controllers;
 
-import me.timothyclare.tawny.dao.api.TokenDao;
+import me.timothyclare.tawny.services.api.ProfileService;
 import me.timothyclare.tawny.twitter.TwitterUtil;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
-import org.zkoss.zkplus.spring.SpringUtil;
 import org.zkoss.zul.A;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Window;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -30,9 +31,18 @@ public class TokenController extends GenericForwardComposer {
 	A authlink;
 	Textbox token;
 	Button submit;
+	Label lblName;
+	Window profile;
 
 	Twitter twitter;
 	RequestToken requestToken;
+	
+	private ProfileService profileService;
+	
+	@Autowired
+	public void setProfileService(ProfileService profileService) {
+		this.profileService = profileService;
+	}
 
 	@Override
 	public void doAfterCompose(Component comp) throws Exception {
@@ -59,7 +69,7 @@ public class TokenController extends GenericForwardComposer {
 
 	public void onClick$submit(Event e) {
 		AccessToken accessToken = null;
-
+		
 		try {
 			if (token.getText().length() > 0) {
 				accessToken = twitter.getOAuthAccessToken(requestToken, token.getText());
@@ -67,14 +77,8 @@ public class TokenController extends GenericForwardComposer {
 				accessToken = twitter.getOAuthAccessToken();
 			}
 			
-			
-			TokenDao tokenDao = SpringUtil.getApplicationContext().getBean(TokenDao.class);
-			if(!tokenDao.save("official", accessToken)) {
-				throw new RuntimeException("Couldn't persiste the token!");
-			}
-
-			
-			Executions.sendRedirect("index.zul");
+			profileService.save(lblName.getValue(), twitter, accessToken);		
+			profile.detach();
 			
 		} catch (TwitterException te) {
 			if (401 == te.getStatusCode()) {
