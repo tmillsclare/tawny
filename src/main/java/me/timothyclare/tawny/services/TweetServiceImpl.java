@@ -44,11 +44,19 @@ public class TweetServiceImpl implements TweetService {
 	}
 
 	public void update(Tweet tweet) {
-		tweetDao.update(tweet);
-		boolean result = tweetTimeManager.cancelTweet(tweet);
 		
-		if(result) {
-			tweetTimeManager.scheduleTweet(tweet);
+		boolean publish = tweet.isTweeted();
+		
+		if(!tweet.isTweeted()) {
+			publish = tweetTimeManager.cancelTweet(tweet);
+			
+			if(publish) {
+				tweetDao.update(tweet);
+				tweetTimeManager.scheduleTweet(tweet);
+			}
+		}
+		
+		if(publish) {
 			EventQueueHelper.INSTANCE.getEventQueue().publish(new TweetEvent(tweet, TweetEvent.TweetEventType.UPDATED));
 		}
 	}
