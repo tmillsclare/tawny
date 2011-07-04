@@ -68,7 +68,7 @@ public class ProfileServiceImpl implements ProfileService {
 		
 		if(accessToken == null) return false;
 		else {
-			//let's precache it, if people are looking for it then
+			//let's cache it, if people are looking for it then
 			//it will be needed
 			
 			try {

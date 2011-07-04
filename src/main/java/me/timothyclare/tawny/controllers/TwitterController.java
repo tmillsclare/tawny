@@ -121,6 +121,7 @@ public class TwitterController extends GenericForwardComposer {
 		
 		if(!validateDate(event.getBeginDate())) {
 			Clients.alert("You cannot update this tweet and schedule it retrospectively");
+			event.clearGhost();
 			return;
 		}
 		
@@ -130,7 +131,7 @@ public class TwitterController extends GenericForwardComposer {
 		}
 		
 		if(event.getBeginDate().equals(tweet.getBeginDate())) {
-			event.clearGhost();
+			
 			return;
 		}
 		
