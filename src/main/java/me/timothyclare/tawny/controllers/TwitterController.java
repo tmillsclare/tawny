@@ -8,12 +8,11 @@ import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.bean.sharer.GenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetAddGenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetUpdateGenericSharer;
-import me.timothyclare.tawny.model.TweetModelExtListener;
-import me.timothyclare.tawny.services.api.ProfileService;
+import me.timothyclare.tawny.manager.api.ProfileManager;
+import me.timothyclare.tawny.model.TweetModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.zkoss.calendar.api.CalendarModel;
 import org.zkoss.calendar.event.CalendarsEvent;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -37,21 +36,21 @@ public class TwitterController extends GenericForwardComposer {
 	private static final TweetAddGenericSharer addTweetSharer = new TweetAddGenericSharer();
 	private static final TweetUpdateGenericSharer updateTweetSharer = new TweetUpdateGenericSharer();
 	
-	private TweetModelExtListener model;
-	private ProfileService profileService;
+	private TweetModel model;
+	private ProfileManager profileManager;
 	
 	@Autowired
-	public void setTweetModelExtListener(TweetModelExtListener model) {
+	public void setTweetModelExtListener(TweetModel model) {
 		this.model = model;
 	}
 	
-	public CalendarModel getCalendarModel() {
+	public TweetModel getCalendarModel() {
 		return this.model;
 	}
 	
 	@Autowired
-	public void setProfileService(ProfileService profileService) {
-		this.profileService = profileService;
+	public void setProfileService(ProfileManager profileManager) {
+		this.profileManager = profileManager;
 	}
 	
 	public void onEventCreate$cal(CalendarsEvent event){     
@@ -63,6 +62,7 @@ public class TwitterController extends GenericForwardComposer {
 		
 		Tweet tweet = new Tweet();
 	    tweet.setBeginDate(event.getBeginDate());
+	    tweet.setProfile(profileManager.getSessionProfile());
 	    
 	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(tweet, addTweetSharer));
 	    
@@ -121,12 +121,12 @@ public class TwitterController extends GenericForwardComposer {
 	}
 	
 	private boolean validateDate(Date test) {
-		final Date now = new Date();
 		
-		if(test.before(now)) {
-			return false;
-		} else {
-			return true;
+		if(test == null) {
+			throw new NullPointerException("The date cannot be null");
 		}
+		
+		final Date now = new Date();
+		return test.before(now);
 	}
 }

@@ -5,8 +5,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
@@ -19,6 +21,7 @@ public class Tweet implements CalendarEvent {
 	private String text;
 	private Date beginDate;
 	private boolean tweeted;
+	private Profile profile;
 
 	private static final String notTweetedColour = "blue";
 	private static final String tweetedColour = "red";
@@ -80,6 +83,15 @@ public class Tweet implements CalendarEvent {
 	
 	public void setContent(String content) {
 		text = content;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 	
 	@Transient

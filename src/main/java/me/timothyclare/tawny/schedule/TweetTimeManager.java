@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Timer;
 
 import me.timothyclare.tawny.bean.Tweet;
-import me.timothyclare.tawny.services.api.ProfileService;
 import me.timothyclare.tawny.services.api.TweetService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ public class TweetTimeManager {
 		TweetTask tweetTask = new TweetTask();
 		tweetTask.setTweet(tweet);
 		tweetTask.setTweetService(tweetService);
-		tweetTask.setProfile(profileService.getCurrentProfile());
 		
 		_timer.schedule(tweetTask, tweet.getBeginDate());
 		scheduledTasks.put(tweet, tweetTask);

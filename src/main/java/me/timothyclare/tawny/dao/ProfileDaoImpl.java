@@ -43,7 +43,7 @@ public class ProfileDaoImpl implements ProfileDao {
 	@Override
 	@Transactional
 	public List<Profile> getAll() {
-		Query query = sessionFactory.getCurrentSession().createQuery("from Product");
+		Query query = sessionFactory.getCurrentSession().createQuery("from Profile");
 		
 		@SuppressWarnings("unchecked")
 		List<Profile> list = query.list();

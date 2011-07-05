@@ -21,7 +21,7 @@ import org.zkoss.zk.ui.event.EventListener;
 
 @Component
 @Scope("desktop")
-public class TweetModelExtListener extends AbstractCalendarModelExt<Tweet> implements EventListener {
+public class TweetModel extends AbstractCalendarModelExt<Tweet> {
 
 	/**
 	 * 
@@ -35,8 +35,18 @@ public class TweetModelExtListener extends AbstractCalendarModelExt<Tweet> imple
 		this.tweetService = tweetService;
 	}
 	
-	public TweetModelExtListener() {
-		TawnyApp.getTawnyApp().getTweetEventQueue().subscribe(this);
+	public TweetModel() {
+		TawnyApp.getTawnyApp().getTweetEventQueue().subscribe(new EventListener() {
+			@Override
+			public void onEvent(Event event) throws Exception {
+				if(!(event instanceof TweetEvent)) {
+					throw new IllegalArgumentException("Argument must be a TweetEvent");
+				}
+				
+				TweetEvent evt = (TweetEvent)event;
+				fireEvent(evt.getType(), evt.getTweet());
+			}
+		});
 	}
 
 	@Override
@@ -50,27 +60,6 @@ public class TweetModelExtListener extends AbstractCalendarModelExt<Tweet> imple
 	
 	public List<Tweet> getAll() {
 		return tweetService.all();
-	}
-
-	@Override
-	public void onEvent(Event event) throws Exception {
-		if(!(event instanceof TweetEvent)) {
-			throw new IllegalArgumentException("Argument must be a TweetEvent");
-		}
-		
-		TweetEvent evt = (TweetEvent)event;
-		
-		switch(evt.getType()) {
-		case ADDED:
-			fireEvent(CalendarDataEvent.INTERVAL_ADDED, evt.getTweet());
-			break;
-		case REMOVED:
-			fireEvent(CalendarDataEvent.INTERVAL_REMOVED, evt.getTweet());
-			break;
-		case UPDATED:
-			fireEvent(CalendarDataEvent.CONTENTS_CHANGED, evt.getTweet());
-			break;
-		}
 	}
 
 	@Override

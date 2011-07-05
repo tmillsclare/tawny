@@ -2,6 +2,7 @@ package me.timothyclare.tawny.dao;
 
 import java.util.List;
 
+import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.dao.api.TweetDao;
 
@@ -23,9 +24,11 @@ public class TweetDaoImpl implements TweetDao {
 	}
 	
 	@Transactional
-	public List<Tweet> getAll() {
+	public List<Tweet> getAll(Profile profile) {
 		Query query = sessionFactory.getCurrentSession().createQuery(
-				"from Tweet");
+				"from Tweet t where t.profile = :profile");
+		
+		query.setParameter("profile", profile);
 
 		@SuppressWarnings("unchecked")
 		List<Tweet> tweets = query.list();

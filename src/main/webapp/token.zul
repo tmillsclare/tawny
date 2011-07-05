@@ -1,8 +1,0 @@
-<?page title="Input your token" contentType="text/html;charset=UTF-8"?>
-<zk>
-	<window title="Input your token" border="normal" apply="me.timothyclare.tawny.controllers.TokenController">
-		Click on the following link and then place your token below: <a id="authlink" href="#" />
-		Token: <textbox id="token" />
-		<button id="submit" label="Submit Token" />
-	</window>
-</zk>

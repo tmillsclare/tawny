@@ -1,13 +1,24 @@
 <?page title="Auto Generated index.zul"?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 
 <window id="win" border="normal" hflex="true" vflex="true" apply="${ profileController }">
-	<window hflex="1" border="normal" title="Create new profile">
-		<textbox id="txtName" />
-		<button id="btnCreateProfile" />
-	</window>
-	<window hflex="1" border="normal" title="Select profile">
-		<listbox mold="select" selectedIndex="-1" id="txtName" />
-		<button id="btnSelectProfile" />
-	</window>
+	<tabbox>
+		<tabs>
+			<tab label="Select"></tab>
+			<tab label="Create"></tab>
+		</tabs>
+		<tabpanels>
+			<tabpanel>
+				<listbox mold="select" id="lstProfiles" model="@{win$composer.profileListModel}" selectedItem="@{win$composer.selectedProfile}">
+					<listitem self="@{ each='profile' }" label="@{ profile.name }" />
+				</listbox>
+				<button id="btnSelectProfile" label="Select profile"/>
+			</tabpanel>
+			<tabpanel>
+				<textbox id="txtName" />
+				<button id="btnCreateProfile" label="Create profile" />
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
 </window>

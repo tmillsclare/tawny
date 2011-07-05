@@ -13,23 +13,21 @@ public class TweetEvent extends Event {
 	
 	private static final String eventName = "TweetEvent";
 	
-	public enum TweetEventType { ADDED, REMOVED, UPDATED }
-	
-	private TweetEventType type;
+	private int type;
 	private Tweet tweet;
 
-	public TweetEvent(Tweet tweet, TweetEventType eventType) {
+	public TweetEvent(Tweet tweet, int eventType) {
 		super(eventName);
 		
 		this.tweet = tweet;
 		this.type = eventType;
 	}
 
-	public TweetEventType getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(TweetEventType type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 

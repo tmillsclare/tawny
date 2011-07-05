@@ -32,7 +32,7 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>me.timothyclare.tawny.bean.Tweet</value>
-				<value>me.timothyclare.tawny.bean.Token</value>
+				<value>me.timothyclare.tawny.bean.Profile</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

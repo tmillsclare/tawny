@@ -1,15 +1,24 @@
 package me.timothyclare.tawny.bean;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import twitter4j.Twitter;
+import me.timothyclare.tawny.twitter.TwitterUtil;
 
+import org.hibernate.annotations.Type;
+
+import twitter4j.Twitter;
+import twitter4j.auth.AccessToken;
+
+@Entity
 public class Profile {
 	
 	private String name;
 	private Twitter twitter;
-	private byte[] token;
+	
+	@Type(type="me.timothyclare.tawny.dao.types.TwitterAccessTokenType")
+	private AccessToken token;
 	
 	@Id
 	public String getName() {
@@ -22,18 +31,18 @@ public class Profile {
 	
 	@Transient
 	public Twitter getTwitter() {
+		if(twitter == null) {
+			twitter = TwitterUtil.INSTANCE.buildTwitter();
+		}
+		
 		return twitter;
 	}
 	
-	public void setTwitter(Twitter twitter) {
-		this.twitter = twitter;
-	}
-	
-	public byte[] getToken() {
+	public AccessToken getToken() {
 		return token;
 	}
 	
-	public void setToken(byte[] token) {
+	public void setToken(AccessToken token) {
 		this.token = token;
 	}
 
@@ -44,17 +53,23 @@ public class Profile {
 
 	@Override
 	public boolean equals(Object obj) {
-		
+			
 		if(obj == this) {
 			return true;
 		}
 		
-		if(!(obj instanceof Profile)) {
-			return false;
+		boolean result = false;
+		
+		if((obj instanceof Profile)) {
+			Profile profile = (Profile)obj;
+			result = this.getName().equals(profile.getName());
 		}
 		
-		Profile profile = (Profile)obj;
-		return this.getName().equals(profile.getName());
+		if(obj instanceof String) {
+			result = this.getName().equals(obj);
+		}
+		
+		return result;
 	}
 	
 	
