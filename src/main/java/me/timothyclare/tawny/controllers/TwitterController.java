@@ -55,7 +55,7 @@ public class TwitterController extends GenericForwardComposer {
 	
 	public void onEventCreate$cal(CalendarsEvent event){     
 	    
-		if(!validateDate(event.getBeginDate())) {
+		if(validDate(event.getBeginDate())) {
 			Clients.alert("You cannot schedule a tweet retrospectively");
 			return;
 		}
@@ -91,7 +91,7 @@ public class TwitterController extends GenericForwardComposer {
 	public void onEventUpdate$cal(CalendarsEvent event) {
 		Tweet tweet = (Tweet)event.getCalendarEvent();
 		
-		if(!validateDate(event.getBeginDate())) {
+		if(validDate(event.getBeginDate())) {
 			Clients.alert("You cannot update this tweet and schedule it retrospectively");
 			event.clearGhost();
 			return;
@@ -120,7 +120,7 @@ public class TwitterController extends GenericForwardComposer {
 	    return map;
 	}
 	
-	private boolean validateDate(Date test) {
+	private boolean validDate(Date test) {
 		
 		if(test == null) {
 			throw new NullPointerException("The date cannot be null");
