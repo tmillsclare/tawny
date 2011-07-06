@@ -8,6 +8,7 @@ import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.TawnyApp;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.event.TweetEvent;
+import me.timothyclare.tawny.manager.api.ProfileManager;
 import me.timothyclare.tawny.model.api.AbstractCalendarModelExt;
 import me.timothyclare.tawny.services.api.TweetService;
 
@@ -30,10 +31,16 @@ public class TweetModel extends AbstractCalendarModelExt<Tweet> {
 	private static final long serialVersionUID = 6946213744355873044L;
 	
 	private TweetService tweetService;
+	private ProfileManager profileManager;
 	
 	@Autowired
 	public void setTweetService(TweetService tweetService) {
 		this.tweetService = tweetService;
+	}
+	
+	@Autowired
+	public void setProfileManager(ProfileManager profileManager) {
+		this.profileManager = profileManager;
 	}
 	
 	public TweetModel() {
@@ -45,7 +52,11 @@ public class TweetModel extends AbstractCalendarModelExt<Tweet> {
 				}
 				
 				TweetEvent evt = (TweetEvent)event;
-				fireEvent(evt.getType(), evt.getTweet());
+				Tweet tweet = evt.getTweet();
+				
+				if(tweet.getProfile().equals(profileManager.getSessionProfile())) {				
+					fireEvent(evt.getType(), evt.getTweet());
+				}
 			}
 		});
 	}
