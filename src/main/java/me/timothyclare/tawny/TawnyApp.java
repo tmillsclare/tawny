@@ -37,4 +37,12 @@ public class TawnyApp extends SimpleWebApp {
 		
 		return eventQueue;
 	}
+	
+	public EventQueue getProfileEventQueue() {
+		if(eventQueue == null) {
+			eventQueue = EventQueues.lookup("profile", this, true);
+		}
+		
+		return eventQueue;
+	}
 }

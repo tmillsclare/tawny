@@ -3,12 +3,15 @@ package me.timothyclare.tawny.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.timothyclare.tawny.TawnyApp;
 import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.dao.api.ProfileDao;
+import me.timothyclare.tawny.event.ProfileEvent;
 import me.timothyclare.tawny.services.api.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.zkoss.zul.event.ListDataEvent;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
@@ -40,11 +43,13 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public void update(Profile profile) {
 		profileDao.update(profile);
+		TawnyApp.getTawnyApp().getProfileEventQueue().publish(new ProfileEvent(profile, ListDataEvent.CONTENTS_CHANGED));
 	}
 
 	@Override
 	public void save(Profile profile) {
 		profileDao.save(profile);
+		TawnyApp.getTawnyApp().getProfileEventQueue().publish(new ProfileEvent(profile, ListDataEvent.INTERVAL_ADDED));
 	}
 
 	@Override

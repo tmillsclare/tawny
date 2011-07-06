@@ -1,19 +1,17 @@
 <?page title="Auto Generated index.zul"?>
-<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 
-<window id="win" border="normal" hflex="true" vflex="true" apply="${ profileController }">
-	<tabbox>
+<window id="win" border="normal" hflex="true" vflex="true" apply="me.timothyclare.tawny.controllers.IndexController">
+	<tabbox id="tbProfile">
 		<tabs>
 			<tab label="Select"></tab>
 			<tab label="Create"></tab>
 		</tabs>
 		<tabpanels>
 			<tabpanel>
-				<include src="macro/selectProfile.zul" mode="defer" />
+				<include src="macro/selectProfile.zul" mode="defer"/>
 			</tabpanel>
 			<tabpanel>
-				<textbox id="txtName" />
-				<button id="btnCreateProfile" label="Create profile" />
+				<include src="macro/createProfile.zul" />
 			</tabpanel>
 		</tabpanels>
 	</tabbox>

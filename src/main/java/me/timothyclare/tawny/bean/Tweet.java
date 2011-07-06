@@ -1,5 +1,6 @@
 package me.timothyclare.tawny.bean;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -17,8 +18,13 @@ import me.timothyclare.tawny.Messages;
 import org.zkoss.calendar.api.CalendarEvent;
 
 @Entity
-public class Tweet implements CalendarEvent {
+public class Tweet implements CalendarEvent, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5073488408284034265L;
+	
 	private Long id;
 	private String text;
 	private Date beginDate;

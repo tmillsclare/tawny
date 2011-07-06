@@ -1,0 +1,6 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<window border="none" apply="${ profileController }">
+	<textbox id="txtName" />
+	<button id="btnCreateProfile" label="Create profile" />
+</window>

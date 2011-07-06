@@ -1,5 +1,7 @@
 package me.timothyclare.tawny.bean;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
@@ -12,10 +14,15 @@ import twitter4j.Twitter;
 import twitter4j.auth.AccessToken;
 
 @Entity
-public class Profile {
+public class Profile implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 485097851811245448L;
 	
 	private String name;
-	private Twitter twitter;
+	private transient Twitter twitter;
 	
 	@Type(type="me.timothyclare.tawny.dao.types.TwitterAccessTokenType")
 	private AccessToken token;
