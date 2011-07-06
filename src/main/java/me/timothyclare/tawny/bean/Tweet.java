@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import me.timothyclare.tawny.Messages;
+
 import org.zkoss.calendar.api.CalendarEvent;
 
 @Entity
@@ -23,8 +25,8 @@ public class Tweet implements CalendarEvent {
 	private boolean tweeted;
 	private Profile profile;
 
-	private static final String notTweetedColour = "blue";
-	private static final String tweetedColour = "red";
+	private static final String notTweetedColour = Messages.getString("Tweet.0");
+	private static final String tweetedColour = Messages.getString("Tweet.1");
 
 	public Tweet() {
 	}
@@ -70,8 +72,8 @@ public class Tweet implements CalendarEvent {
 	@Transient
 	@Override
 	public String getTitle() {
-		String sId = this.id == null ? "" : this.id.toString(); 
-		return "Tweet " + sId;
+		String sId = this.id == null ? "" : this.id.toString();
+		return Messages.getString("Tweet.3") + sId;
 	}
 	
 	@NotNull

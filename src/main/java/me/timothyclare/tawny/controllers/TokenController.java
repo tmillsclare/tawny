@@ -1,5 +1,6 @@
 package me.timothyclare.tawny.controllers;
 
+import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.services.api.ProfileService;
 
@@ -51,33 +52,33 @@ public class TokenController extends GenericForwardComposer {
 
 		if (myProfile.getTwitter() == null)
 			throw new RuntimeException(
-					"No twitter factory defined, please restart the application");
+					Messages.getString("TokenController.0"));
 
 		
 		try {
 			requestToken = myProfile.getTwitter().getOAuthRequestToken();
 		} catch(TwitterException te) {
 			//this didn't work let's rebuild and try again
-			throw new RuntimeException("Cannot create twitter instance");
+			throw new RuntimeException(Messages.getString("TokenController.1"));
 		}
 		
 		authlink.setHref(requestToken.getAuthorizationURL());
 		authlink.setLabel(requestToken.getAuthorizationURL());
-		authlink.setTarget("new");
+		authlink.setTarget(Messages.getString("TokenController.2"));
 	}
 
 	public void onClick$submit(Event e) {
 		AccessToken accessToken = null;
 		
 		if(token.getText().length() == 0) {
-			Clients.alert("You must enter a token!");
+			Clients.alert(Messages.getString("TokenController.3"));
 			return;
 		}
 		
 		try {
 			accessToken = myProfile.getTwitter().getOAuthAccessToken(requestToken, token.getText());
 			
-			Object obj = this.arg.get("name");		
+			Object obj = this.arg.get("name");
 			myProfile.setName((String)obj);
 			myProfile.getTwitter().setOAuthAccessToken(accessToken);
 			myProfile.setToken(accessToken);
@@ -87,7 +88,7 @@ public class TokenController extends GenericForwardComposer {
 			
 		} catch (TwitterException te) {
 			if (401 == te.getStatusCode()) {
-				System.out.println("Unable to get the access token.");
+				System.out.println(Messages.getString("TokenController.5"));
 			} else {
 				te.printStackTrace();
 			}

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.services.api.TweetService;
 
@@ -26,7 +27,7 @@ public class TweetTimeManager {
 	public void scheduleTweet(Tweet tweet) {
 		
 		if(tweet == null) {
-			throw new NullPointerException("The argument tweetContext cannot be null");
+			throw new NullPointerException(Messages.getString("TweetTimeManager.0"));
 		}
 		
 		TweetTask tweetTask = new TweetTask();
@@ -43,7 +44,7 @@ public class TweetTimeManager {
 		boolean result = false;
 		
 		if (tweet == null) {
-			throw new NullPointerException("The argument tweetContext cannot be null");
+			throw new NullPointerException(Messages.getString("TweetTimeManager.1"));
 		}
 		
 		TweetTask tt = scheduledTasks.remove(tweet);

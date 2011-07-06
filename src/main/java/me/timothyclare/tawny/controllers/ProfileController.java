@@ -3,6 +3,7 @@ package me.timothyclare.tawny.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.manager.api.ProfileManager;
 import me.timothyclare.tawny.model.ProfileListModel;
@@ -80,13 +81,13 @@ public class ProfileController extends GenericForwardComposer {
 	public void onClick$btnCreateProfile(Event event) {
 		
 		if(profileService.profileExists(txtName.getText())) {
-			Clients.alert("profile already exists, please select a new name for it");
+			Clients.alert(Messages.getString("ProfileController.0"));
 			return;
 		}
 		
 		Map<String, String> arguments = new HashMap<String,String>();
 		arguments.put("name", txtName.getText());
-		tokenWindow = Executions.createComponents("macro/profileModal.zul", win, arguments);
+		tokenWindow = Executions.createComponents(Messages.getString("ProfileController.2"), win, arguments);
 		
 		AnnotateDataBinder adb = new AnnotateDataBinder(tokenWindow);
 	    adb.loadAll();
@@ -97,12 +98,12 @@ public class ProfileController extends GenericForwardComposer {
 	public void onClick$btnSelectProfile(Event event) {
 		
 		if(selectedProfile == null) {
-			Clients.alert("You must select a profile before continuing");
+			Clients.alert(Messages.getString("ProfileController.3"));
 			return;
 		}
 		
 		profileManager.setSessionProfile(selectedProfile);
 		selectedProfile.getTwitter().setOAuthAccessToken(selectedProfile.getToken());
-		Executions.sendRedirect("calendar.zul");	
+		Executions.sendRedirect(Messages.getString("ProfileController.4"));
 	}
 }

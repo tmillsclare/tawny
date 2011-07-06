@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import me.timothyclare.tawny.Messages;
+
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
 
@@ -93,7 +95,7 @@ public class TwitterAccessTokenType implements UserType {
 	@Override
 	public Serializable disassemble(Object value) throws HibernateException {
 		if(!(value instanceof AccessToken)) {
-			throw new UnsupportedOperationException("Cannot convert " + value.getClass());
+			throw new UnsupportedOperationException(me.timothyclare.tawny.Messages.getString("TwitterAccessTokenType.0") + value.getClass());
 		}
 		
 		return (Serializable) value;
@@ -118,10 +120,10 @@ public class TwitterAccessTokenType implements UserType {
 			return aToken;
 		} catch (IOException e) {
 			//TODO: log
-			throw new HibernateException("Could not read the access token");
+			throw new HibernateException(Messages.getString("TwitterAccessTokenType.1"));
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			throw new HibernateException("Could not read the access token");
+			throw new HibernateException(Messages.getString("TwitterAccessTokenType.1"));
 		}
 	}
 	
@@ -140,7 +142,7 @@ public class TwitterAccessTokenType implements UserType {
 			buffer = bos.toByteArray();
 		} catch (IOException e) {
 			//return false; TODO: log
-			throw new HibernateException("Could not read the access token");
+			throw new HibernateException(Messages.getString("TwitterAccessTokenType.1"));
 		} finally {
 			if(out != null) {
 				try {

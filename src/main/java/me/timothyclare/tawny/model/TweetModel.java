@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.TawnyApp;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.event.TweetEvent;
@@ -40,7 +41,7 @@ public class TweetModel extends AbstractCalendarModelExt<Tweet> {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				if(!(event instanceof TweetEvent)) {
-					throw new IllegalArgumentException("Argument must be a TweetEvent");
+					throw new IllegalArgumentException(Messages.getString("TweetModel.0"));
 				}
 				
 				TweetEvent evt = (TweetEvent)event;

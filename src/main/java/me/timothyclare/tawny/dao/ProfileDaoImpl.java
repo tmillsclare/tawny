@@ -2,6 +2,7 @@ package me.timothyclare.tawny.dao;
 
 import java.util.List;
 
+import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.dao.api.ProfileDao;
 
@@ -43,7 +44,7 @@ public class ProfileDaoImpl implements ProfileDao {
 	@Override
 	@Transactional
 	public List<Profile> getAll() {
-		Query query = sessionFactory.getCurrentSession().createQuery("from Profile");
+		Query query = sessionFactory.getCurrentSession().createQuery(Messages.getString("ProfileDaoImpl.0"));
 		
 		@SuppressWarnings("unchecked")
 		List<Profile> list = query.list();

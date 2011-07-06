@@ -1,5 +1,6 @@
 package me.timothyclare.tawny.manager;
 
+import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.manager.api.ProfileManager;
 
@@ -13,12 +14,12 @@ public class ProfileManagerImpl implements ProfileManager {
 	
 	@Override
 	public Profile getSessionProfile() {
-		return (Profile) Executions.getCurrent().getSession().getAttribute("sessionProfile");
+		return (Profile) Executions.getCurrent().getSession().getAttribute(Messages.getString("ProfileManagerImpl.0"));
 	}
 	
 	@Override
 	public void setSessionProfile(Profile profile) {
-		Executions.getCurrent().getSession().setAttribute("sessionProfile", profile);
+		Executions.getCurrent().getSession().setAttribute(Messages.getString("ProfileManagerImpl.0"), profile);
 	}
 
 	@Override

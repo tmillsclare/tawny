@@ -11,11 +11,11 @@ public class TawnyApp extends SimpleWebApp {
 	
 	public static void setTawnyApp(TawnyApp tawnyApp) {
 		if(TawnyApp.tawnyApp != null) {
-			throw new IllegalStateException("Tawny app cannot be set more than once");
+			throw new IllegalStateException(Messages.getString("TawnyApp.0"));
 		}
 		
 		if(tawnyApp == null) {
-			throw new NullPointerException("tawnyApp cannot be null");
+			throw new NullPointerException(Messages.getString("TawnyApp.1"));
 		}
 		
 		TawnyApp.tawnyApp = tawnyApp;
@@ -32,7 +32,7 @@ public class TawnyApp extends SimpleWebApp {
 	public EventQueue getTweetEventQueue() {
 		
 		if(eventQueue == null) {
-			eventQueue = EventQueues.lookup("tweet", this, true);
+			eventQueue = EventQueues.lookup(Messages.getString("TawnyApp.2"), this, true);
 		}
 		
 		return eventQueue;

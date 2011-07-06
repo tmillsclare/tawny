@@ -2,6 +2,7 @@ package me.timothyclare.tawny.schedule;
 
 import java.util.TimerTask;
 
+import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.services.api.TweetService;
 import twitter4j.Twitter;
@@ -17,7 +18,7 @@ public class TweetTask extends TimerTask {
 	
 	public void setTweet(Tweet tweet) {
 		if(tweet == null) {
-			throw new NullPointerException("The argument tweet cannot be null");
+			throw new NullPointerException(Messages.getString("TweetTask.0"));
 		}
 		
 		this.tweet = tweet;
@@ -35,7 +36,7 @@ public class TweetTask extends TimerTask {
 		Twitter twitter = tweet.getProfile().getTwitter();
 
 		if (twitter == null) {
-			throw new RuntimeException("Twitter does not exist");
+			throw new RuntimeException(Messages.getString("TweetTask.1"));
 		}
 
 		try {

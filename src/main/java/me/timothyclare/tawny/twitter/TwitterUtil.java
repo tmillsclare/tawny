@@ -8,9 +8,9 @@ public enum TwitterUtil {
 	
 	INSTANCE;
 	
-	public static final String TWITTERSESSION = Messages.getString("TwitterService.InstanceName");
-	public static final String CONSUMERKEY = Messages.getString("TwitterService.ConsumerKey");
-	public static final String CONSUMERSECRET = Messages.getString("TwitterService.ConsumerSecret");
+	public static final String TWITTERSESSION = Messages.getString(Messages.getString("TwitterUtil.0"));
+	public static final String CONSUMERKEY = Messages.getString(Messages.getString("TwitterUtil.1"));
+	public static final String CONSUMERSECRET = Messages.getString(Messages.getString("TwitterUtil.2"));
 	
 	public Twitter buildTwitter() throws RuntimeException {
 		Twitter twitter = new TwitterFactory().getInstance();

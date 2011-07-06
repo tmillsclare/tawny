@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.bean.sharer.GenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetAddGenericSharer;
@@ -66,7 +67,7 @@ public class TwitterController extends GenericForwardComposer {
 		
 		if(!profileManager.isAuthenticated()) {
 			try {
-				response.sendRedirect(response.encodeRedirectURL("index.zul"));
+				response.sendRedirect(response.encodeRedirectURL(Messages.getString("TwitterController.0")));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -80,7 +81,7 @@ public class TwitterController extends GenericForwardComposer {
 	public void onEventCreate$cal(CalendarsEvent event){     
 	    
 		if(validDate(event.getBeginDate())) {
-			Clients.alert("You cannot schedule a tweet retrospectively");
+			Clients.alert(Messages.getString("TwitterController.1"));
 			return;
 		}
 		
@@ -88,7 +89,7 @@ public class TwitterController extends GenericForwardComposer {
 	    tweet.setBeginDate(event.getBeginDate());
 	    tweet.setProfile(profileManager.getSessionProfile());
 	    
-	    bookEventWin = Executions.createComponents("macro/book.zul", win, generateArguments(tweet, addTweetSharer));
+	    bookEventWin = Executions.createComponents(Messages.getString("TwitterController.2"), win, generateArguments(tweet, addTweetSharer));
 	    
 	    AnnotateDataBinder adb = new AnnotateDataBinder(bookEventWin);
 	    adb.loadAll();
@@ -100,11 +101,11 @@ public class TwitterController extends GenericForwardComposer {
 		Tweet tweet = (Tweet)event.getCalendarEvent();
 		
 		if(tweet.isTweeted()) {
-			Clients.alert("You cannot edit this tweet it has already been tweeted");
+			Clients.alert(Messages.getString("TwitterController.3"));
 			return;
 		}
 		
-		editEventWin = Executions.createComponents("macro/bookEdit.zul", win, generateArguments(tweet, updateTweetSharer));
+		editEventWin = Executions.createComponents(Messages.getString("TwitterController.4"), win, generateArguments(tweet, updateTweetSharer));
 		
 		AnnotateDataBinder adb = new AnnotateDataBinder(editEventWin);
 	    adb.loadAll();
@@ -116,13 +117,13 @@ public class TwitterController extends GenericForwardComposer {
 		Tweet tweet = (Tweet)event.getCalendarEvent();
 		
 		if(validDate(event.getBeginDate())) {
-			Clients.alert("You cannot update this tweet and schedule it retrospectively");
+			Clients.alert(Messages.getString("TwitterController.5"));
 			event.clearGhost();
 			return;
 		}
 		
 		if(tweet.isTweeted()) {
-			alert("You cannot update this tweet it has already been tweeted");
+			alert(Messages.getString("TwitterController.6"));
 			return;
 		}
 		
@@ -147,7 +148,7 @@ public class TwitterController extends GenericForwardComposer {
 	private boolean validDate(Date test) {
 		
 		if(test == null) {
-			throw new NullPointerException("The date cannot be null");
+			throw new NullPointerException(Messages.getString("TwitterController.8"));
 		}
 		
 		final Date now = new Date();

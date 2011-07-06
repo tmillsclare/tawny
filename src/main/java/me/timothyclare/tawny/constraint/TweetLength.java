@@ -1,5 +1,7 @@
 package me.timothyclare.tawny.constraint;
 
+import me.timothyclare.tawny.Messages;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zul.Constraint;
@@ -12,11 +14,11 @@ public class TweetLength implements Constraint {
 		String item = (String)arg1;
 		
 		if((item == null) || ("".equals(item))) {
-			throw new WrongValueException(arg0, "The value cannot be null or empty");
+			throw new WrongValueException(arg0, Messages.getString("TweetLength.1"));
 		}
 		
 		if(item.length() > 140) {
-			throw new WrongValueException(arg0, "Tweet must be 140 characters or less");
+			throw new WrongValueException(arg0, Messages.getString("TweetLength.2"));
 		}
 	}
 
