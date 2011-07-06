@@ -8,7 +8,7 @@
 		</tabs>
 		<tabpanels>
 			<tabpanel>
-				<include src="macro/selectProfile.zul" mode="defer"/>
+				<include src="macro/selectProfile.zul" mode="defer" />
 			</tabpanel>
 			<tabpanel>
 				<include src="macro/createProfile.zul" />

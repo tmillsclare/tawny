@@ -5,10 +5,14 @@ import java.util.List;
 import me.timothyclare.tawny.bean.Profile;
 
 public interface ProfileService {
-	public Profile get(String profileName);
-	public List<Profile> getAll();
-	public void update(Profile profile);
-	public void save(Profile profile);
+	Profile get(String profileName);
+	List<Profile> getAll();
+	boolean update(Profile profile);
+	boolean save(Profile profile);
 	
-	public boolean profileExists(String profileName);
+	int count();
+	Profile getElementAt(int index);
+	int indexOf(Profile profile);
+		
+	boolean profileExists(String profileName);
 }
