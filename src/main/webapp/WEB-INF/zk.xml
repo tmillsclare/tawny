@@ -11,9 +11,6 @@
 		</server-push-class>
 	</device-config>
 	<listener>
-		<listener-class>me.timothyclare.tawny.TwitterService</listener-class>
-	</listener>
-	<listener>
 		<listener-class>me.timothyclare.tawny.WebApplicationStart
 		</listener-class>
 	</listener>
