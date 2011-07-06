@@ -2,6 +2,7 @@ package me.timothyclare.tawny.bean.sharer;
 
 import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Tweet;
+import me.timothyclare.tawny.bean.sharer.api.AbstractGenericSharer;
 import me.timothyclare.tawny.model.TweetModel;
 
 import org.zkoss.zkplus.spring.SpringUtil;

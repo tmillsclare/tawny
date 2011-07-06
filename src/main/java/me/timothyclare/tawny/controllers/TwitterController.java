@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Tweet;
-import me.timothyclare.tawny.bean.sharer.GenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetAddGenericSharer;
 import me.timothyclare.tawny.bean.sharer.TweetUpdateGenericSharer;
+import me.timothyclare.tawny.bean.sharer.api.GenericSharer;
 import me.timothyclare.tawny.manager.api.ProfileManager;
 import me.timothyclare.tawny.model.TweetModel;
 

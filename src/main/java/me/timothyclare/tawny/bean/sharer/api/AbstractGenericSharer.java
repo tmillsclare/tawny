@@ -1,4 +1,4 @@
-package me.timothyclare.tawny.bean.sharer;
+package me.timothyclare.tawny.bean.sharer.api;
 
 public abstract class AbstractGenericSharer<T> implements GenericSharer<T> {
 	
