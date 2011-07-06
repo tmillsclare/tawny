@@ -4,12 +4,10 @@ import me.timothyclare.tawny.Messages;
 import me.timothyclare.tawny.bean.Profile;
 import me.timothyclare.tawny.manager.api.ProfileManager;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.zkoss.zk.ui.Executions;
 
 @Component
-@Scope("prototype")
 public class ProfileManagerImpl implements ProfileManager {
 	
 	@Override
