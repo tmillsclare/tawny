@@ -1,8 +1,12 @@
 package me.timothyclare.tawny.controllers;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import me.timothyclare.tawny.bean.Tweet;
 import me.timothyclare.tawny.bean.sharer.GenericSharer;
@@ -16,6 +20,8 @@ import org.springframework.context.annotation.Scope;
 import org.zkoss.calendar.event.CalendarsEvent;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Page;
+import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zkplus.databind.AnnotateDataBinder;
@@ -53,6 +59,25 @@ public class TwitterController extends GenericForwardComposer {
 		this.profileManager = profileManager;
 	}
 	
+	@Override
+	public ComponentInfo doBeforeCompose(Page page, Component parent,
+			ComponentInfo compInfo) {
+				
+		HttpServletResponse response = (HttpServletResponse)Executions.getCurrent().getNativeResponse();
+		
+		if(!profileManager.isAuthenticated()) {
+			try {
+				response.sendRedirect(response.encodeRedirectURL("index.zul"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Executions.getCurrent().setVoided(true);
+		}
+		
+		return super.doBeforeCompose(page, parent, compInfo);
+	}
+
 	public void onEventCreate$cal(CalendarsEvent event){     
 	    
 		if(validDate(event.getBeginDate())) {

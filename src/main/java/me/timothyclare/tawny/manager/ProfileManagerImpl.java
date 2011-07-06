@@ -29,10 +29,6 @@ public class ProfileManagerImpl implements ProfileManager {
 		if(sessionProfile == null) {return false;}
 		if(sessionProfile.getToken() == null) {return false;}
 		
-		if (sessionProfile.getTwitter().getAuthorization().isEnabled()) {
-			return true;
-		}
-		
-		return false;
+		return sessionProfile.getTwitter().getAuthorization().isEnabled();
 	}
 }
