@@ -1,5 +1,4 @@
 <?page title="Auto Generated index.zul"?>
-<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 
 <window id="win" border="normal" hflex="true" vflex="true" apply="${ profileController }">
@@ -10,10 +9,7 @@
 		</tabs>
 		<tabpanels>
 			<tabpanel>
-				<listbox mold="select" id="lstProfiles" model="@{win$composer.profileListModel}" selectedItem="@{win$composer.selectedProfile}">
-					<listitem self="@{ each='profile' }" label="@{ profile.name }" />
-				</listbox>
-				<button id="btnSelectProfile" label="Select profile"/>
+				<include src="macro/selectProfile.zul" mode="defer" />
 			</tabpanel>
 			<tabpanel>
 				<textbox id="txtName" />

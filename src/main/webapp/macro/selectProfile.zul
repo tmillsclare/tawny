@@ -1,0 +1,9 @@
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+
+<window id="select" apply="${profileSelectController }" border="none">
+	<listbox mold="select" id="lstProfiles" model="@{select$composer.profileListModel}" selectedItem="@{select$composer.selectedProfile}">
+		<listitem self="@{ each='profile' }" label="@{ profile.name }" />
+	</listbox>
+	<button id="btnSelectProfile" label="Select profile"/>
+</window>
